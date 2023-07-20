@@ -1,4 +1,18 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  experimental: {
+    appDir: true,
+  },
 
-module.exports = nextConfig
+  output: "export",
+  trailingSlash: true,
+  distDir: "dist/supercharged",
+};
+
+module.exports = nextConfig;

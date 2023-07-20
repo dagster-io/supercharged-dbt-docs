@@ -7,23 +7,44 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "update-schemas": "concurrently 'quicktype -o src/schemas/manifest.ts -t manifest --src-lang schema https://schemas.getdbt.com/dbt/manifest/v9.json' 'quicktype -o src/schemas/catalog.ts -t catalog --src-lang schema https://schemas.getdbt.com/dbt/catalog/v1.json'"
+    "update-schemas": "concurrently 'quicktype -o src/schemas/manifest.ts -t manifest --src-lang schema https://schemas.getdbt.com/dbt/manifest/v6.json' 'quicktype -o src/schemas/catalog.ts -t catalog --src-lang schema https://schemas.getdbt.com/dbt/catalog/v1.json'",
+    "postinstall": "patch-package",
+    "serve": "make all && concurrently 'cd dist/original && ../../.venv/bin/python -m http.server --bind 0.0.0.0 8081' 'cd dist/supercharged && ../../.venv/bin/python -m http.server --bind 0.0.0.0 8082'",
+    "serve-gzip": "make all && concurrently 'cd dist/original && ../../.venv/bin/python -m httpcompressionserver --bind 0.0.0.0 8081' 'cd dist/supercharged && ../../.venv/bin/python -m httpcompressionserver --bind 0.0.0.0 8082'"
   },
   "dependencies": {
+    "@tanstack/react-virtual": "3.0.0-beta.18",
+    "@types/": "ungap/structured-clone",
+    "@types/lodash": "^4.14.196",
     "@types/node": "20.4.1",
     "@types/react": "18.2.14",
-    "@types/react-dom": "18.2.6",
-    "autoprefixer": "10.4.14",
+    "@types/react-dom": "^18.2.7",
+    "@types/underscore": "^1.11.6",
+    "@types/ungap__structured-clone": "^0.3.0",
+    "@ungap/structured-clone": "^1.2.0",
+    "deepmerge": "^4.3.1",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
-    "next": "13.4.9",
-    "postcss": "8.4.25",
+    "lodash": "^4.17.21",
+    "next": "^13.4.12",
+    "node-ts": "^6.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "tailwindcss": "3.3.2",
-    "typescript": "5.1.6"
+    "react-lazy-with-preload": "^2.2.1",
+    "react-syntax-highlighter": "^15.5.0",
+    "server-only": "^0.0.1",
+    "swr": "^2.2.0",
+    "ts-node": "^10.9.1",
+    "typescript": "5.1.6",
+    "underscore": "^1.13.6"
   },
   "devDependencies": {
+    "@types/react-syntax-highlighter": "^15.5.7",
+    "autoprefixer": "^10.4.14",
+    "concurrently": "^8.2.0",
+    "patch-package": "^8.0.0",
+    "postcss": "^8.4.27",
+    "postinstall-postinstall": "^2.1.0",
     "quicktype": "^23.0.54"
   }
 }
