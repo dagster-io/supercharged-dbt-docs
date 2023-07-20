@@ -1,5 +1,5 @@
-import { Catalog } from "@/schemas/catalog";
-import { Manifest } from "@/schemas/manifest";
+import { Convert as CatalogConvert } from "@/schemas/catalog";
+import { Convert as ManifestConvert } from "@/schemas/manifest";
 
 interface ModelPageParams {
   id: string;
@@ -7,12 +7,12 @@ interface ModelPageParams {
 
 async function getCatalog() {
   const { default: rawData } = await import("@/dbt-project-data/catalog.json");
-  return rawData as Catalog;
+  return CatalogConvert.toCatalog(JSON.stringify(rawData));
 }
 
 async function getManifest() {
   const { default: rawData } = await import("@/dbt-project-data/manifest.json");
-  return rawData as Manifest;
+  return ManifestConvert.toManifest(JSON.stringify(rawData));
 }
 
 export async function generateStaticParams(): Promise<ModelPageParams[]> {
