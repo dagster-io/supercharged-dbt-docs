@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "update-schemas": "concurrently 'quicktype -o src/schemas/manifest.ts -t manifest --src-lang schema https://schemas.getdbt.com/dbt/manifest/v9.json' 'quicktype -o src/schemas/catalog.ts -t catalog --src-lang schema https://schemas.getdbt.com/dbt/catalog/v1.json'"
+    "update-schemas": "concurrently 'quicktype -o src/schemas/manifest.ts -t manifest --src-lang schema https://schemas.getdbt.com/dbt/manifest/v6.json' 'quicktype -o src/schemas/catalog.ts -t catalog --src-lang schema https://schemas.getdbt.com/dbt/catalog/v1.json'"
   },
   "dependencies": {
     "@types/node": "20.4.1",
@@ -24,6 +24,7 @@
     "typescript": "5.1.6"
   },
   "devDependencies": {
+    "concurrently": "^8.2.0",
     "quicktype": "^23.0.54"
   }
 }
