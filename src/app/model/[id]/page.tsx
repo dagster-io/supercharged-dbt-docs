@@ -1,18 +1,27 @@
-import { Convert as CatalogConvert } from "@/schemas/catalog";
-import { Convert as ManifestConvert } from "@/schemas/manifest";
+import "server-only";
+import { Catalog, Convert as CatalogConvert } from "@/schemas/catalog";
+import { Manifest, Convert as ManifestConvert } from "@/schemas/manifest";
+import rawCatalogData from "@/dbt-project-data/catalog.json";
+import rawManifestData from "@/dbt-project-data/manifest.json";
 
 interface ModelPageParams {
   id: string;
 }
 
+let _catalog: Catalog;
 async function getCatalog() {
-  const { default: rawData } = await import("@/dbt-project-data/catalog.json");
-  return CatalogConvert.toCatalog(JSON.stringify(rawData));
+  if (!_catalog) {
+    _catalog = CatalogConvert.toCatalog(JSON.stringify(rawCatalogData));
+  }
+  return _catalog;
 }
 
+let _manifest: Manifest;
 async function getManifest() {
-  const { default: rawData } = await import("@/dbt-project-data/manifest.json");
-  return ManifestConvert.toManifest(JSON.stringify(rawData));
+  if (!_manifest) {
+    _manifest = ManifestConvert.toManifest(JSON.stringify(rawManifestData));
+  }
+  return _manifest;
 }
 
 export async function generateStaticParams(): Promise<ModelPageParams[]> {
