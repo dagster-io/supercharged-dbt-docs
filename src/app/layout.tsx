@@ -1,6 +1,9 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Icons from "@/svgs/icons";
+import Logo from "@/svgs/logo";
+import Glyphs from "@/svgs/glyphs";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +21,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <main className="mx-8">{children}</main>
+        <div style={{ display: "none" }}>
+          <Icons />
+          <Logo />
+          <Glyphs />
+        </div>
       </body>
     </html>
   );

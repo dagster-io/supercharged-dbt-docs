@@ -2,7 +2,7 @@
 
 import _ from "underscore";
 import React from "react";
-import * as projectService from "@/app/service";
+import * as projectService from "@/app/projectService";
 
 export const TableDetails = ({
   model,

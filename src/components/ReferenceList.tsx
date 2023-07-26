@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import _ from "underscore";
+import Link from "next/link";
 
 export const ReferenceList = ({
   references,
@@ -8,40 +11,44 @@ export const ReferenceList = ({
   references: any;
   node: any;
 }) => {
-  let selected_type;
-  let has_references = false;
-  let nodes;
+  const hasReferences = references && _.size(references) > 0;
+  const [selectedType, setSelectedType] = React.useState(() => {
+    if (hasReferences) {
+      return _.keys(references)[0];
+    }
+    return null;
+  });
+  const nodes = selectedType ? references[selectedType] : [];
 
-  if (node && _.size(node) > 0) {
-    selected_type = _.keys(node)[0];
-    has_references = true;
-    nodes = references[selected_type];
-  } else {
-    has_references = false;
-  }
   return (
     <div className="panel">
-      {!has_references ? (
+      {!hasReferences ? (
         <div className="panel-body">
           No resources reference this {node.resource_type}
         </div>
       ) : (
         <div className="panel-body">
           <ul className="nav nav-tabs">
-            <li
-              ng-repeat="(resource_type, nodes) in references"
-              ng-class="{active: resource_type == selected_type}"
-            >
-              <a ng-click="setType(resource_type)">
-                {mapResourceType(node.resource_type)}
-              </a>
-            </li>
+            {Object.keys(references).map((resource_type) => (
+              <li
+                key={resource_type}
+                className={resource_type === selectedType ? "active" : ""}
+              >
+                <a
+                  onClick={() => {
+                    setSelectedType(resource_type);
+                  }}
+                >
+                  {mapResourceType(resource_type)}
+                </a>
+              </li>
+            ))}
           </ul>
           <div style={{ marginTop: "15px" }}>
             <ul className="list-unstyled">
               {nodes.map((node: any, index: number) => (
                 <li key={index}>
-                  <a ng-href="{{ getNodeUrl(node) }}">{node.name}</a>
+                  <Link href={getNodeUrl(node)}>{node.name}</Link>
                 </li>
               ))}
             </ul>
@@ -74,4 +81,8 @@ function mapResourceType(type: string) {
   } else {
     return "Nodes";
   }
+}
+
+function getNodeUrl(node: any) {
+  return "/" + node.resource_type + "/" + node.unique_id;
 }

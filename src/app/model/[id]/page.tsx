@@ -1,9 +1,10 @@
 import _ from "underscore";
-import * as projectService from "@/app/service";
+import * as projectService from "@/app/projectService";
 import { TableDetails } from "@/components/TableDetails";
 import { ColumnDetails } from "@/components/ColumnDetails";
 import { ReferenceList } from "@/components/ReferenceList";
 import { CodeBlock } from "@/components/CodeBlock";
+import { getReferences, getParents } from "@/util/dagUtils";
 
 interface ModelPageParams {
   id: string;
@@ -15,11 +16,9 @@ export default async function ModelPage({
   params: ModelPageParams;
 }) {
   const model = projectService.project.nodes[id];
-  // TODO
-  const references = {}; //dag_utils.getReferences(projectService, model);
+  const references = getReferences(projectService.project, model);
   const referencesLength = Object.keys(references).length;
-  // TODO
-  const parents = {}; //dag_utils.getParents(projectService, model);
+  const parents = getParents(projectService.project, model);
   const parentsLength = Object.keys(parents).length;
   const language = model.language;
 
@@ -28,8 +27,6 @@ export default async function ModelPage({
     Source: model.raw_code || "",
     Compiled: model.compiled_code || default_compiled,
   };
-
-  console.log({ versions });
 
   return (
     <>

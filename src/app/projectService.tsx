@@ -39,7 +39,7 @@ export function node(unique_id: string) {
 }
 
 export function match_dict_keys(dest_keys: string[], obj: any) {
-  var new_obj: Partial<Record<keyof T, T[keyof T]>> = {};
+  var new_obj: any = {};
   if (obj) {
     _.each(obj, function (value, key) {
       var desired_key = _.find(dest_keys, function (k) {
@@ -806,3 +806,10 @@ export function caseColumn(col: any) {
 }
 
 loadProject();
+Object.values(project.nodes).forEach((node: any) => {
+  if (node.columns) {
+    Object.values(node.columns).forEach((col: any) => {
+      col.display_name = caseColumn(node.name);
+    });
+  }
+});

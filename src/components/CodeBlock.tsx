@@ -17,7 +17,7 @@ export const CodeBlock = ({
     [language]
   );
 
-  const { source, code } = React.useMemo(() => {
+  const { source, code, highlighted } = React.useMemo(() => {
     const source = versions[selectedVersion] || "";
     // $timeout(function () {
     //   // for good measure, also use Prism's built-in mechanism to identify and
