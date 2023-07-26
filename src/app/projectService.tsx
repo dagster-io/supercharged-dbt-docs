@@ -23,7 +23,7 @@ export const tree: any = {
   database: [],
   sources: [],
 };
-export const files = {
+export const files: any = {
   manifest: getManifest(),
   catalog: getCatalog(),
 };
