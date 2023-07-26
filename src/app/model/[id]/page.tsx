@@ -3,6 +3,7 @@ import * as projectService from "@/app/service";
 import { TableDetails } from "@/components/TableDetails";
 import { ColumnDetails } from "@/components/ColumnDetails";
 import { ReferenceList } from "@/components/ReferenceList";
+import { CodeBlock } from "@/components/CodeBlock";
 
 interface ModelPageParams {
   id: string;
@@ -24,9 +25,11 @@ export default async function ModelPage({
 
   const default_compiled = "\n-- compiled code not found for this model\n";
   const versions = {
-    Source: model.raw_code,
+    Source: model.raw_code || "",
     Compiled: model.compiled_code || default_compiled,
   };
+
+  console.log({ versions });
 
   return (
     <>
@@ -121,14 +124,18 @@ export default async function ModelPage({
                 <div className="section-target" id="depends_on"></div>
                 <div className="section-content">
                   <h6>Depends On</h6>
-                  {/* <reference-list references="parents" node="model" /> */}
+                  <ReferenceList references={parents} node={model} />
                 </div>
               </section>
             ) : null}
             <section className="section">
               <div className="section-target" id="code"></div>
               <div className="section-content">
-                {/* <code-block versions="versions" default="default_version" language="language"></code-block> */}
+                <CodeBlock
+                  versions={versions}
+                  defaultVersion={"Source"}
+                  language={language}
+                />
               </div>
             </section>
           </div>
