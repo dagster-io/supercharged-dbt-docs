@@ -2,6 +2,7 @@ import _ from "underscore";
 import * as projectService from "@/app/service";
 import { TableDetails } from "@/components/TableDetails";
 import { ColumnDetails } from "@/components/ColumnDetails";
+import { ReferenceList } from "@/components/ReferenceList";
 
 interface ModelPageParams {
   id: string;
@@ -103,7 +104,7 @@ export default async function ModelPage({
               <div className="section-target" id="columns"></div>
               <div className="section-content">
                 <h6>Columns</h6>
-                <ColumnDetails />
+                <ColumnDetails model={model} />
               </div>
             </section>
             {referencesLength != 0 ? (
@@ -111,7 +112,7 @@ export default async function ModelPage({
                 <div className="section-target" id="referenced_by"></div>
                 <div className="section-content">
                   <h6>Referenced By</h6>
-                  {/* <reference-list references="references" node="model" /> */}
+                  <ReferenceList references={references} node={model} />
                 </div>
               </section>
             ) : null}
