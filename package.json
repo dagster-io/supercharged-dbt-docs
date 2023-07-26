@@ -10,16 +10,21 @@
     "update-schemas": "concurrently 'quicktype -o src/schemas/manifest.ts -t manifest --src-lang schema https://schemas.getdbt.com/dbt/manifest/v6.json' 'quicktype -o src/schemas/catalog.ts -t catalog --src-lang schema https://schemas.getdbt.com/dbt/catalog/v1.json'"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.196",
     "@types/node": "20.4.1",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
+    "@types/underscore": "^1.11.6",
+    "deepmerge": "^4.3.1",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
-    "next": "13.4.9",
+    "lodash": "^4.17.21",
+    "next": "^13.4.12",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "server-only": "^0.0.1",
-    "typescript": "5.1.6"
+    "typescript": "5.1.6",
+    "underscore": "^1.13.6"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
