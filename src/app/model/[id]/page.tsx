@@ -1,3 +1,5 @@
+import "server-only";
+
 import _ from "underscore";
 import * as projectService from "@/app/projectService";
 import { TableDetails } from "@/components/TableDetails";
@@ -5,7 +7,6 @@ import { ColumnDetails } from "@/components/ColumnDetails";
 import { ReferenceList } from "@/components/ReferenceList";
 import { CodeBlock } from "@/components/CodeBlock";
 import { getReferences, getParents } from "@/util/dagUtils";
-import { getCatalog } from "@/app/data";
 
 interface ModelPageParams {
   id: string;
@@ -16,6 +17,7 @@ export default async function ModelPage({
 }: {
   params: ModelPageParams;
 }) {
+  await projectService.loadProject();
   const model = projectService.project.nodes[id];
   const references = getReferences(projectService.project, model);
   const referencesLength = Object.keys(references).length;
@@ -141,13 +143,6 @@ export default async function ModelPage({
       </div>
     </>
   );
-}
-
-export async function generateStaticParams(): Promise<ModelPageParams[]> {
-  const catalog = getCatalog();
-  return Object.keys(catalog.nodes)
-    .filter((id) => catalog.nodes[id].resource_type === "model")
-    .map((id) => ({ id }));
 }
 
 export const revalidate = Infinity;

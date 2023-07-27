@@ -1,8 +1,12 @@
+import "server-only";
+
+import process from "process";
+import fs from "fs";
+import path from "path";
 import _ from "lodash";
 import merge from "deepmerge";
 import { Manifest } from "@/schemas/manifest";
 import { Catalog } from "@/schemas/catalog";
-import { getCatalog, getManifest } from "./data";
 import { getQuoteChar } from "./compat";
 
 function capitalizeType(type: any) {
@@ -18,14 +22,16 @@ function capitalizeType(type: any) {
 export const project: any = {
   nodes: {},
 };
+
 export const tree: any = {
   project: [],
   database: [],
   sources: [],
 };
-export const files: any = {
-  manifest: getManifest(),
-  catalog: getCatalog(),
+
+const files: any = {
+  manifest: null,
+  catalog: null,
 };
 
 export function find_by_id(uid: string, cb: (node: any) => void) {
@@ -81,7 +87,49 @@ function incorporate_catalog(manifest: Manifest, catalog: Catalog) {
   return merge(catalog, manifest);
 }
 
-export function loadProject() {
+let _isLoadingPromise: Promise<void>;
+export async function loadProject() {
+  if (!_isLoadingPromise) {
+    _isLoadingPromise = new Promise(async (res) => {
+      await loadProjectImpl();
+      res();
+    });
+  }
+  return await _isLoadingPromise;
+}
+
+async function loadProjectImpl() {
+  console.log("loadProjectImpl");
+  const fsLoadStart = performance.now();
+  const [manifest, catalog] = await Promise.all([
+    new Promise((res) => {
+      fs.readFile(
+        path.join(process.cwd(), "/manifest.json"),
+        { encoding: "utf8" },
+        (err, data) => {
+          res(data);
+        }
+      );
+    }),
+    new Promise((res) => {
+      fs.readFile(
+        path.join(process.cwd(), "/catalog.json"),
+        { encoding: "utf8" },
+        (err, data) => {
+          res(data);
+        }
+      );
+    }),
+  ]);
+  console.log("loading files took", performance.now() - fsLoadStart);
+  files.manifest = JSON.parse(manifest as string);
+  files.catalog = JSON.parse(catalog as string);
+
+  console.log(
+    "parseing and loading combined took",
+    performance.now() - fsLoadStart
+  );
+
   // Set node labels
   _.each(files.manifest.nodes, function (node: any) {
     if (node.resource_type == "model" && node.version != null) {
@@ -231,6 +279,14 @@ export function loadProject() {
       return !obj.docs || obj.docs.show;
     }
   );
+
+  Object.values(project.nodes).forEach((node: any) => {
+    if (node.columns) {
+      Object.values(node.columns).forEach((col: any) => {
+        col.display_name = caseColumn(col.name);
+      });
+    }
+  });
 }
 
 function fuzzySearchObj(query: string, obj: any) {
@@ -804,12 +860,3 @@ export function caseColumn(col: any) {
     return col;
   }
 }
-
-loadProject();
-Object.values(project.nodes).forEach((node: any) => {
-  if (node.columns) {
-    Object.values(node.columns).forEach((col: any) => {
-      col.display_name = caseColumn(node.name);
-    });
-  }
-});
