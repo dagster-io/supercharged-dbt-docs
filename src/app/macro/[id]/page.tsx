@@ -100,7 +100,7 @@ export default async function MacroPage({
             <div className="section-target" id="arguments"></div>
             <div className="section-content">
               <h6>Arguments</h6>
-              <MacroArguments />
+              <MacroArguments macro={macro} />
             </div>
           </section>
 
