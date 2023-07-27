@@ -7,7 +7,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   experimental: {
-    // incrementalCacheHandlerPath: require.resolve("./cache-handler.js"),
+    appDir: true,
   },
 };
 
