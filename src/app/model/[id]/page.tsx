@@ -8,14 +8,10 @@ import { ReferenceList } from "@/components/ReferenceList";
 import { CodeBlock } from "@/components/CodeBlock";
 import { getReferences, getParents } from "@/util/dagUtils";
 
-interface ModelPageParams {
-  id: string;
-}
-
 export default async function ModelPage({
   params: { id },
 }: {
-  params: ModelPageParams;
+  params: { id: string };
 }) {
   await projectService.loadProject();
   const model = projectService.project.nodes[id];
