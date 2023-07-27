@@ -9,7 +9,7 @@ export const ReferenceList = ({
   node,
 }: {
   references: any;
-  node: any;
+  node?: any;
 }) => {
   const hasReferences = references && _.size(references) > 0;
   const [selectedType, setSelectedType] = React.useState(() => {
