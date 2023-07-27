@@ -5,6 +5,7 @@ import { ColumnDetails } from "@/components/ColumnDetails";
 import { ReferenceList } from "@/components/ReferenceList";
 import { CodeBlock } from "@/components/CodeBlock";
 import { getReferences, getParents } from "@/util/dagUtils";
+import { getCatalog } from "@/app/data";
 
 interface ModelPageParams {
   id: string;
@@ -142,41 +143,11 @@ export default async function ModelPage({
   );
 }
 
-function has_test(col: any, test_name: string) {
-  var test_types = _.pluck(col.tests, "short");
-  return test_types.indexOf(test_name) != -1;
+export async function generateStaticParams(): Promise<ModelPageParams[]> {
+  const catalog = getCatalog();
+  return Object.keys(catalog.nodes)
+    .filter((id) => catalog.nodes[id].resource_type === "model")
+    .map((id) => ({ id }));
 }
 
-function has_more_info(column: any) {
-  var tests = column.tests || [];
-  var description = column.description || "";
-  var meta = column.meta || {};
-
-  return tests.length || description.length || !_.isEmpty(meta);
-}
-
-function toggle_column_expanded(column: any) {
-  if (has_more_info(column)) {
-    column.expanded = !column.expanded;
-  }
-}
-
-function getState(node: any) {
-  return "dbt." + node.resource_type;
-}
-
-function get_col_name(col_name: string) {
-  return projectService.caseColumn(col_name);
-}
-
-function get_columns(model: any) {
-  var columns = _.chain(model.columns).values().sortBy("index").value();
-
-  // re-number columns because index comes from the catalog, and index may not always be present
-  // this prevents errors with the view's `track by column.index`
-  _.each(columns, function (col, i) {
-    col.index = i;
-  });
-
-  return columns;
-}
+export const revalidate = Infinity;
