@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { copyToClipboard } from "@/util/copyToClipboard";
 
 export const CodeBlock = ({
   versions,
@@ -17,28 +19,15 @@ export const CodeBlock = ({
     [language]
   );
 
-  const { source, code, highlighted } = React.useMemo(() => {
-    const source = versions[selectedVersion] || "";
-    // $timeout(function () {
-    //   // for good measure, also use Prism's built-in mechanism to identify and
-    //   // highlight all `code` elements based on their `language-xxxx` class
-    //   Prism.highlightAll();
-    // });
-
-    return {
-      source: source,
-      code: source.trim(),
-      highlighted: source.trim(), // codeService.highlight(code, language);
-    };
-  }, [selectedVersion, versions]);
+  const source = versions[selectedVersion] || "";
 
   function titleCase(name: string) {
     return name.charAt(0).toUpperCase() + name.substring(1);
   }
 
   const [copied, setCopied] = React.useState(false);
-  function copy_to_clipboard() {
-    // codeService.copy_to_clipboard(scope.source);
+  function handleCopyToClipboard() {
+    copyToClipboard(source);
     setCopied(true);
     setTimeout(function () {
       setCopied(false);
@@ -69,20 +58,26 @@ export const CodeBlock = ({
             ))}
             <li className="nav-pull-right"></li>
             <li>
-              <a className="unselectable" ng-click="copy_to_clipboard()">
+              <a
+                className="unselectable"
+                href="javascript:;"
+                onClick={handleCopyToClipboard}
+              >
                 {copied ? "copied" : "copy to clipboard"}
               </a>
             </li>
           </ul>
           <div style={{ marginTop: "1px" }}>
-            <pre
-              style={{ backgroundColor: "white" }}
+            <SyntaxHighlighter
+              language={language}
+              style={{ backgroundColor: "white" } as any}
               className="code line-numbers"
+              codeTagProps={{
+                className: `source-code highlight ${language_class}`,
+              }}
             >
-              <code className={`source-code highlight ${language_class}`}>
-                {highlighted}
-              </code>
-            </pre>
+              {source.trim()}
+            </SyntaxHighlighter>
           </div>
         </div>
       </div>

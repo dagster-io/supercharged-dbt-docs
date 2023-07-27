@@ -31,7 +31,6 @@ export default async function RootLayout({
   search?: React.ReactNode;
   test?: React.ReactNode;
 }) {
-  console.log({ search, rest });
   return (
     <html lang="en">
       <body className={inter.className}>

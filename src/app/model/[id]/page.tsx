@@ -23,8 +23,8 @@ export default async function ModelPage({
 
   const default_compiled = "\n-- compiled code not found for this model\n";
   const versions = {
-    Source: model.raw_code || "",
-    Compiled: model.compiled_code || default_compiled,
+    Source: model.raw_code || model.raw_sql || "",
+    Compiled: model.compiled_code || model.compiled_sql || default_compiled,
   };
 
   return (

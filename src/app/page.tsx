@@ -1,8 +1,6 @@
 import React, { Suspense } from "react";
 
 export default function Home() {
-  console.log("home");
-
   return (
     <div className="app-details app-scroll app-pad">
       <div className="app-frame app-pad">
