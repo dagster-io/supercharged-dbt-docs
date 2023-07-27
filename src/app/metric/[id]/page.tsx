@@ -7,6 +7,7 @@ import { ColumnDetails } from "@/components/ColumnDetails";
 import { ReferenceList } from "@/components/ReferenceList";
 import { CodeBlock } from "@/components/CodeBlock";
 import { getReferences, getParents } from "@/util/dagUtils";
+import Link from "next/link";
 
 export default async function MetricPage({
   params: { id },

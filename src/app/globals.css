@@ -1,10 +1,27 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 html, body, .mx-8 {
   height: 100%;
 }
+
+small {
+  margin-left: 8px;
+}
+
+.spinner {
+  display: inline-block;
+  transition: opacity linear 0.1s 0.2s;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(80, 80, 80, 0.5);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+  opacity: 0;
+}
+.spinner--active {
+  opacity: 1;
+}
+
+/* CSS copied from DBT Docs site below */
 
 .__________cytoscape_container { position: relative; }[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak, .ng-hide:not(.ng-hide-animate) { display: none !important; }ng\:form { display: block; }.ng-animate-shim { visibility: hidden; }.ng-anchor { position: absolute; }@media (max-width: 960px) {
   [data-large] { display: none !important; }
