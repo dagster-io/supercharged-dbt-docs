@@ -58,11 +58,7 @@ export const CodeBlock = ({
             ))}
             <li className="nav-pull-right"></li>
             <li>
-              <a
-                className="unselectable"
-                href="javascript:;"
-                onClick={handleCopyToClipboard}
-              >
+              <a className="unselectable" onClick={handleCopyToClipboard}>
                 {copied ? "copied" : "copy to clipboard"}
               </a>
             </li>

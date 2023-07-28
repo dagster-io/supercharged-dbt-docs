@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import Icons from "@/svgs/icons";
 import Logo from "@/svgs/logo";
 import Glyphs from "@/svgs/glyphs";
-import { loadProject } from "./projectService";
+import { loadProject, project } from "./projectService";
 import React, { Suspense } from "react";
 import _ from "underscore";
 import { GraphLauncher } from "@/components/GraphLauncher";
@@ -19,6 +19,7 @@ export const metadata: Metadata = {
   description: "built using React Server Components",
 };
 
+// TODO: remove?
 loadProject();
 
 export default async function RootLayout({
