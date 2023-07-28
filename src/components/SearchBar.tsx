@@ -1,12 +1,17 @@
 "use client";
-
-import { nextTick } from "process";
-
-import { DOMElement, useEffect, useRef, useState, useTransition } from "react";
+import { DOMElement, Suspense, useEffect, useState } from "react";
 import Spinner from "./Spinner";
 import useSWR from "swr";
-import { SearchResults } from "./SearchResults";
 import { createPortal } from "react-dom";
+import React from "react";
+import { lazyWithPreload } from "react-lazy-with-preload";
+
+const SearchResults = lazyWithPreload(() =>
+  import("./SearchResults").then((mod) => ({
+    default: mod.SearchResults,
+  }))
+);
+SearchResults.preload();
 
 async function fetcher(url: string) {
   const response = await fetch(url);
@@ -21,19 +26,32 @@ export function SearchBar() {
 
   useEffect(() => {
     const node = document.createElement("div");
-    node.style.position = "absolute";
+    node.style.position = "fixed";
     node.style.left = "0px";
     node.style.right = "0px";
     node.style.top = "81px";
+    node.style.bottom = "0px";
     node.style.background = "rgb(249, 250, 251)";
     document.body.appendChild(node);
     setContainer(node);
     return () => {
-      document.body.removeChild(node);
+      if (node.parentNode === document.body) {
+        document.body.removeChild(node);
+      }
     };
   }, []);
 
-  const { data, error, isLoading } = useSWR(
+  useEffect(() => {
+    if (container) {
+      if (!searchValue) {
+        container.style.display = "none";
+      } else {
+        container.style.display = "block";
+      }
+    }
+  }, [container, searchValue]);
+
+  const { data, isLoading } = useSWR(
     isFocused || searchValue.trim().length > 0 ? "/searchdata" : null,
     fetcher
   );
@@ -62,11 +80,13 @@ export function SearchBar() {
         placeholder="Search for models..."
       />
       <div className="app-body"></div>
-      {isFocused ? (
+      {searchValue.length ? (
         <div
+          style={{ cursor: "pointer" }}
           className="app-footer app-icn"
-          ng-show="search.is_focused"
-          ng-click="clearSearch()"
+          onClick={() => {
+            setSearchValue("");
+          }}
         >
           <svg className="icn icn-md">
             <use xlinkHref="#icn-close"></use>
@@ -76,26 +96,24 @@ export function SearchBar() {
       {container &&
         createPortal(
           data && searchValue.trim().length > 0 && (
-            <SearchResults all={false} query={searchValue} searchable={data} />
+            <Suspense
+              fallback={
+                <div style={{ width: "100%", height: "100%", margin: "auto" }}>
+                  <Spinner />
+                </div>
+              }
+            >
+              <SearchResults
+                query={searchValue}
+                searchable={data}
+                clearQuery={() => {
+                  setSearchValue("");
+                }}
+              />
+            </Suspense>
           ),
           container
         )}
     </>
   );
-}
-
-export function ShowAllResultsLink({ results }: { results: number }) {
-  // const url = new URL(window.location.href);
-  // url.searchParams.set("a", "1");
-  // const { push } = useRouter();
-  // return (
-  //   <a
-  //     onClick={() => {
-  //       push(`${url.pathname}?${url.searchParams.toString()}`);
-  //     }}
-  //   >
-  //     Show {results - 20} more
-  //   </a>
-  // );
-  return null;
 }

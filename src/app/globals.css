@@ -1,7 +1,10 @@
 html, body, .mx-8 {
   height: 100%;
+  color: #5e666c;
 }
-
+a > * {
+  color: #5e666c !important;
+}
 small {
   margin-left: 8px;
 }
@@ -19,6 +22,16 @@ small {
 }
 .spinner--active {
   opacity: 1;
+}
+
+.search-result-match {
+  background-color: #eee;
+}
+.spacing {
+    margin-right: 0.25em;
+}
+.sub-results {
+    margin-left: 36px;
 }
 
 /* CSS copied from DBT Docs site below */

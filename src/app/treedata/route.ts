@@ -13,3 +13,5 @@ export async function GET() {
   tree.database = Object.values(tree.database);
   return NextResponse.json(tree);
 }
+
+export const revalidate = Infinity;

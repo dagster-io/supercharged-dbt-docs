@@ -1,6 +1,7 @@
 import _ from "lodash";
 import Link from "next/link";
-import { ShowAllResultsLink } from "@/components/SearchBar";
+import React from "react";
+import { useVirtualizer } from "@tanstack/react-virtual";
 
 function fuzzySearchObj(query: string, obj: any) {
   var objects = [];
@@ -103,21 +104,21 @@ function search(q: string, searchable: any) {
 
 export function SearchResults({
   query,
-  all,
   searchable,
+  clearQuery,
 }: {
   query: string;
-  all: boolean;
   searchable: any;
+  clearQuery: () => void;
 }) {
-  const checkboxStatus = {
+  const [checkboxStatus, setCheckboxStatus] = React.useState({
     show_names: false,
     show_descriptions: false,
     show_columns: false,
     show_column_descriptions: false,
     show_code: false,
     show_tags: false,
-  };
+  });
 
   function getModelName(model: any) {
     if (model.resource_type == "source") {
@@ -181,7 +182,10 @@ export function SearchResults({
     return finalResults;
   }
 
-  const results = filterResults(search(query, searchable), checkboxStatus);
+  const results = React.useMemo(
+    () => filterResults(search(query, searchable), checkboxStatus),
+    [query, searchable, checkboxStatus]
+  );
 
   function shorten(text: string) {
     if (
@@ -248,195 +252,282 @@ export function SearchResults({
     return _.words(query.toLowerCase());
   }
 
+  const container = React.useRef<HTMLDivElement | null>(null);
+  const rowVirtualizer = useVirtualizer({
+    count: results.length,
+    getScrollElement: () => container.current,
+    estimateSize: () => 100,
+  });
+
+  const totalHeight = rowVirtualizer.getTotalSize();
+  const items = rowVirtualizer.getVirtualItems();
+  React.useLayoutEffect(
+    () => {
+      rowVirtualizer.measure();
+      requestAnimationFrame(rowVirtualizer.measure);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [results]
+  );
+
   return (
-    <>
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-        .search-result-match {
-          background-color: #eee;
-        }
-        .spacing {
-            margin-right: 0.25em;
-        }
-        .sub-results {
-            margin-left: 36px;
-        }
-      `,
+    <div style={{ position: "relative", height: "100%" }}>
+      <div
+        ref={container}
+        style={{
+          overflowY: "scroll",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
         }}
-      />
-      <div className="app-title">
-        <div className="app-frame app-pad">
-          <h1>
-            <span className="break">{query}</span>
-            <small>
-              <span>{results.length}</span> search results
-            </small>
-          </h1>
-          <input
-            type="checkbox"
-            id="name"
-            ng-model="checkboxStatus.show_names"
-            ng-click="filterResults(results, checkboxStatus)"
-            style={{ marginLeft: "10px", marginRight: "5px" }}
-          />
-          <label htmlFor="name" style={{ marginRight: "25px" }}>
-            Name
-          </label>
-          <input
-            type="checkbox"
-            id="desc"
-            ng-model="checkboxStatus.show_descriptions"
-            ng-click="filterResults(results, checkboxStatus)"
-            style={{ marginRight: "5px" }}
-          />
-          <label htmlFor="desc" style={{ marginRight: "25px" }}>
-            Description
-          </label>
-          <input
-            type="checkbox"
-            id="column"
-            ng-model="checkboxStatus.show_columns"
-            ng-click="filterResults(results, checkboxStatus)"
-            style={{ marginRight: "5px" }}
-          />
-          <label htmlFor="column" style={{ marginRight: "25px" }}>
-            Column
-          </label>
-          <input
-            type="checkbox"
-            id="column_description"
-            ng-model="checkboxStatus.show_column_descriptions"
-            ng-click="filterResults(results, checkboxStatus)"
-            style={{ marginRight: "5px" }}
-          />
-          <label htmlFor="column_description" style={{ marginRight: "25px" }}>
-            Column Description
-          </label>
-          <input
-            type="checkbox"
-            id="code"
-            ng-model="checkboxStatus.show_code"
-            ng-click="filterResults(results, checkboxStatus)"
-            style={{ marginRight: "5px" }}
-          />
-          <label htmlFor="code" style={{ marginRight: "15px" }}>
-            SQL
-          </label>
-          <input
-            type="checkbox"
-            id="tag"
-            ng-model="checkboxStatus.show_tags"
-            ng-click="filterResults(results, checkboxStatus)"
-            style={{ marginRight: "5px" }}
-          />
-          <label htmlFor="tag" style={{ marginRight: "15px" }}>
-            Tags
-          </label>
+      >
+        <div className="app-title">
+          <div
+            className="app-frame app-pad"
+            style={{ marginBottom: 0, paddingBottom: 0 }}
+          >
+            <h1>
+              <span className="break">{query}</span>
+              <small>
+                <span>{results.length}</span> search results
+              </small>
+            </h1>
+            <input
+              type="checkbox"
+              id="name"
+              checked={checkboxStatus.show_names}
+              onChange={(e) => {
+                setCheckboxStatus((status) => ({
+                  ...status,
+                  show_names: e.target.checked,
+                }));
+              }}
+              style={{ marginLeft: "10px", marginRight: "5px" }}
+            />
+            <label htmlFor="name" style={{ marginRight: "25px" }}>
+              Name
+            </label>
+            <input
+              type="checkbox"
+              id="desc"
+              checked={checkboxStatus.show_descriptions}
+              onChange={(e) => {
+                setCheckboxStatus((status) => ({
+                  ...status,
+                  show_descriptions: e.target.checked,
+                }));
+              }}
+              style={{ marginRight: "5px" }}
+            />
+            <label htmlFor="desc" style={{ marginRight: "25px" }}>
+              Description
+            </label>
+            <input
+              type="checkbox"
+              id="column"
+              checked={checkboxStatus.show_columns}
+              onChange={(e) => {
+                setCheckboxStatus((status) => ({
+                  ...status,
+                  show_columns: e.target.checked,
+                }));
+              }}
+              style={{ marginRight: "5px" }}
+            />
+            <label htmlFor="column" style={{ marginRight: "25px" }}>
+              Column
+            </label>
+            <input
+              type="checkbox"
+              id="column_description"
+              checked={checkboxStatus.show_column_descriptions}
+              onChange={(e) => {
+                setCheckboxStatus((status) => ({
+                  ...status,
+                  show_column_descriptions: e.target.checked,
+                }));
+              }}
+              style={{ marginRight: "5px" }}
+            />
+            <label htmlFor="column_description" style={{ marginRight: "25px" }}>
+              Column Description
+            </label>
+            <input
+              type="checkbox"
+              id="code"
+              checked={checkboxStatus.show_code}
+              onChange={(e) => {
+                setCheckboxStatus((status) => ({
+                  ...status,
+                  show_code: e.target.checked,
+                }));
+              }}
+              style={{ marginRight: "5px" }}
+            />
+            <label htmlFor="code" style={{ marginRight: "15px" }}>
+              SQL
+            </label>
+            <input
+              type="checkbox"
+              id="tag"
+              checked={checkboxStatus.show_tags}
+              onChange={(e) => {
+                setCheckboxStatus((status) => ({
+                  ...status,
+                  show_tags: e.target.checked,
+                }));
+              }}
+              style={{ marginRight: "5px" }}
+            />
+            <label htmlFor="tag" style={{ marginRight: "15px" }}>
+              Tags
+            </label>
+          </div>
         </div>
-      </div>
-      <div className="app-details">
-        <div className="app-frame app-pad">
-          <div className="results">
-            {(all ? results : results.slice(0, 20)).map((result: any, i: number) => (
-              <Link href={getNodeUrl(result.model)} key={i}>
-                <div className="result search-result">
-                  <div className="result-content">
-                    <div className="result-icn">
-                      <svg className="icn ">
-                        <use xlinkHref="#icn-doc"></use>
-                      </svg>
-                    </div>
-                    <div className="result-body">
-                      <h4 className="a">
-                        <span
-                          dangerouslySetInnerHTML={{
-                            __html: highlight(getModelName(result.model)),
-                          }}
-                        />
-                        <small>{result.model.resource_type}</small>
-                      </h4>
-                      <p
-                        dangerouslySetInnerHTML={{
-                          __html: highlight(shorten(result.model.description)),
-                        }}
-                      />
-                    </div>
-                  </div>
-                  {query.length > 0 ? (
-                    <>
-                      <div className="sub-results">
-                        <div style={{ display: "grid" }}>
-                          <div
-                            style={{
-                              display: "flex",
-                              flexWrap: "wrap",
-                              rowGap: "2px",
-                              columnGap: "4px",
-                            }}
-                          >
-                            {columnFilter(result.model.columns).map(
-                              (column: any, index, arr) => (
-                                <span key={index}>
-                                  {index === 0 ? <span>columns: </span> : null}
-                                  <span
-                                    dangerouslySetInnerHTML={{
-                                      __html: highlight(
-                                        column +
-                                          (arr.length - 1 === index ? "" : ",")
-                                      ),
-                                    }}
-                                  />
-                                </span>
-                              )
-                            )}
+        <div className="app-details">
+          <div className="app-frame app-pad" style={{ paddingTop: 0 }}>
+            <div className="results" style={{ height: totalHeight + "px" }}>
+              {items.map(({ index, key, start, measureElement }) => {
+                const result = results[index];
+                return (
+                  <div
+                    key={key}
+                    style={{
+                      transform: `translateY(${start}px)`,
+                      position: "absolute",
+                      width: "100%",
+                    }}
+                    ref={(el) => {
+                      measureElement(el);
+                      requestAnimationFrame(() => measureElement(el));
+                    }}
+                  >
+                    <Link
+                      href={getNodeUrl(result.model)}
+                      onClick={(e) => {
+                        if (!e.ctrlKey && !e.metaKey) {
+                          clearQuery();
+                        }
+                      }}
+                    >
+                      <div className="result search-result">
+                        <div className="result-content">
+                          <div className="result-icn">
+                            <svg className="icn ">
+                              <use xlinkHref="#icn-doc"></use>
+                            </svg>
+                          </div>
+                          <div className="result-body">
+                            <h4 className="a">
+                              <span
+                                dangerouslySetInnerHTML={{
+                                  __html: checkboxStatus.show_names
+                                    ? highlight(getModelName(result.model))
+                                    : getModelName(result.model),
+                                }}
+                              />
+                              <small>{result.model.resource_type}</small>
+                            </h4>
+                            <p
+                              dangerouslySetInnerHTML={{
+                                __html: checkboxStatus.show_descriptions
+                                  ? highlight(shorten(result.model.description))
+                                  : shorten(result.model.description),
+                              }}
+                            />
                           </div>
                         </div>
-                      </div>
-                      <div className="sub-results">
-                        <span>
-                          <span
-                            dangerouslySetInnerHTML={{
-                              __html: highlight(
-                                shorten(result.model["raw_code"])
-                              ),
-                            }}
-                          />
-                        </span>
-                      </div>
-                      <div className="sub-results">
-                        {result.model.tags.length ? (
+                        {query.length > 0 ? (
                           <>
-                            <span>tags: </span>
-                            {result.model.tags.map(
-                              (tag: string, index: number, arr: string[]) => (
-                                <span key={tag}>
-                                  <span
-                                    dangerouslySetInnerHTML={{
-                                      __html: highlight(
-                                        tag +
-                                          (index === arr.length - 1 ? "" : ",")
-                                      ),
-                                    }}
-                                  ></span>
-                                </span>
-                              )
-                            )}
+                            <div className="sub-results">
+                              <div style={{ display: "grid" }}>
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    flexWrap: "wrap",
+                                    rowGap: "2px",
+                                    columnGap: "4px",
+                                  }}
+                                >
+                                  {columnFilter(result.model.columns).map(
+                                    (column: any, index, arr) => (
+                                      <span key={index}>
+                                        {index === 0 ? (
+                                          <span>columns: </span>
+                                        ) : null}
+                                        <span
+                                          dangerouslySetInnerHTML={{
+                                            __html: checkboxStatus.show_columns
+                                              ? highlight(
+                                                  column +
+                                                    (arr.length - 1 === index
+                                                      ? ""
+                                                      : ",")
+                                                )
+                                              : column +
+                                                (arr.length - 1 === index
+                                                  ? ""
+                                                  : ","),
+                                          }}
+                                        />
+                                      </span>
+                                    )
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="sub-results">
+                              <span>
+                                <span
+                                  dangerouslySetInnerHTML={{
+                                    __html: highlight(
+                                      shorten(result.model["raw_code"])
+                                    ),
+                                  }}
+                                />
+                              </span>
+                            </div>
+                            <div className="sub-results">
+                              {result.model.tags.length ? (
+                                <>
+                                  <span>tags: </span>
+                                  {result.model.tags.map(
+                                    (
+                                      tag: string,
+                                      index: number,
+                                      arr: string[]
+                                    ) => (
+                                      <span key={tag}>
+                                        <span
+                                          dangerouslySetInnerHTML={{
+                                            __html: highlight(
+                                              tag +
+                                                (index === arr.length - 1
+                                                  ? ""
+                                                  : ",")
+                                            ),
+                                          }}
+                                        ></span>
+                                      </span>
+                                    )
+                                  )}
+                                </>
+                              ) : null}
+                            </div>
                           </>
                         ) : null}
                       </div>
-                    </>
-                  ) : null}
-                </div>
-              </Link>
-            ))}
-            {!all && results.length > 20 ? (
-              <ShowAllResultsLink results={results.length} />
-            ) : null}
+                    </Link>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
