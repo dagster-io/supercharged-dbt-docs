@@ -11,6 +11,7 @@
     "update-schemas": "concurrently 'quicktype -o src/schemas/manifest.ts -t manifest --src-lang schema https://schemas.getdbt.com/dbt/manifest/v6.json' 'quicktype -o src/schemas/catalog.ts -t catalog --src-lang schema https://schemas.getdbt.com/dbt/catalog/v1.json'"
   },
   "dependencies": {
+    "@tanstack/react-virtual": "3.0.0-beta.18",
     "@types/": "ungap/structured-clone",
     "@types/lodash": "^4.14.196",
     "@types/node": "20.4.1",
@@ -27,6 +28,7 @@
     "node-ts": "^6.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-lazy-with-preload": "^2.2.1",
     "react-syntax-highlighter": "^15.5.0",
     "server-only": "^0.0.1",
     "swr": "^2.2.0",
