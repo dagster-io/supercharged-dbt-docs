@@ -31,7 +31,6 @@ export default async function RootLayout({
   search?: React.ReactNode;
   test?: React.ReactNode;
 }) {
-  console.log({ search, rest });
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -81,7 +80,9 @@ export default async function RootLayout({
                 </div>
                 <div className="app-body">
                   <div className="app-scroll app-pad app-flush-right no-x-overflow">
-                    <ModelTree />
+                    <Suspense>
+                      <ModelTree />
+                    </Suspense>
                   </div>
                 </div>
               </div>

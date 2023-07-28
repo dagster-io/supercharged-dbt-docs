@@ -2,6 +2,7 @@ import _ from "lodash";
 import * as projectService from "@/app/projectService";
 import Link from "next/link";
 import { ShowAllResultsLink } from "@/components/SearchBar";
+import React from "react";
 
 export default async function SearchPage({
   searchParams,
