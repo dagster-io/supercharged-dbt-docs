@@ -5,8 +5,6 @@ import fs from "fs";
 import path from "path";
 import _ from "lodash";
 import merge from "deepmerge";
-import { Manifest } from "@/schemas/manifest";
-import { Catalog } from "@/schemas/catalog";
 import { getQuoteChar } from "./compat";
 
 function capitalizeType(type: any) {
@@ -63,7 +61,7 @@ export function match_dict_keys(dest_keys: string[], obj: any) {
   return new_obj;
 }
 
-function incorporate_catalog(manifest: Manifest, catalog: Catalog) {
+function incorporate_catalog(manifest: any, catalog: any): any {
   // Re-combine sources and nodes
   _.each(catalog.sources, function (source, source_id) {
     catalog.nodes[source_id] = source;
@@ -99,8 +97,6 @@ export async function loadProject() {
 }
 
 async function loadProjectImpl() {
-  console.log("loadProjectImpl");
-  const fsLoadStart = performance.now();
   const [manifest, catalog] = await Promise.all([
     new Promise((res) => {
       fs.readFile(
@@ -121,14 +117,8 @@ async function loadProjectImpl() {
       );
     }),
   ]);
-  console.log("loading files took", performance.now() - fsLoadStart);
   files.manifest = JSON.parse(manifest as string);
   files.catalog = JSON.parse(catalog as string);
-
-  console.log(
-    "parseing and loading combined took",
-    performance.now() - fsLoadStart
-  );
 
   // Set node labels
   _.each(files.manifest.nodes, function (node: any) {
@@ -349,36 +339,6 @@ export function getModelTree(select: any, cb: (model: any) => void) {
   cb(tree);
 }
 
-export function updateSelectedInTree(select: any, subtrees: any) {
-  var is_active = false;
-  _.each(subtrees, function (subtree) {
-    if (subtree.node && subtree.node.unique_id == select) {
-      subtree.active = true;
-      is_active = true;
-    } else if (subtree.node && subtree.node.unique_id != select) {
-      subtree.active = false;
-    } else {
-      var child_active = updateSelectedInTree(select, subtree.items);
-      if (child_active) {
-        subtree.active = true;
-        is_active = true;
-      }
-    }
-  });
-  return is_active;
-}
-
-export function updateSelected(select: any) {
-  updateSelectedInTree(select, tree.project);
-  updateSelectedInTree(select, tree.database);
-  updateSelectedInTree(select, tree.groups);
-  updateSelectedInTree(select, tree.sources);
-  updateSelectedInTree(select, tree.exposures);
-  updateSelectedInTree(select, tree.metrics);
-
-  return tree;
-}
-
 function recursiveFlattenItems(tree: any) {
   const res: any[] = [];
 
@@ -401,24 +361,19 @@ function buildSourceTree(nodes: any, select: any) {
   _.each(nodes, function (node) {
     var source = node.source_name;
     var name = node.name;
-    var is_active = node.unique_id == select;
 
     if (!sources[source]) {
       sources[source] = {
         type: "folder",
         name: source,
-        active: is_active,
         items: [],
       };
-    } else if (is_active) {
-      sources[source].active = true;
     }
 
     sources[source].items.push({
       type: "file",
       name: name,
-      node: node,
-      active: is_active,
+      resource_type: node.resource_type,
       unique_id: node.unique_id,
       node_type: "source",
     });
@@ -443,25 +398,18 @@ function buildExposureTree(nodes: any, select: any) {
 
     var type = node.type || "Uncategorized";
     type = capitalizeType(type);
-
-    var is_active = node.unique_id == select;
-
     if (!exposures[type]) {
       exposures[type] = {
         type: "folder",
         name: type,
-        active: is_active,
         items: [],
       };
-    } else if (is_active) {
-      exposures[type].active = true;
     }
 
     exposures[type].items.push({
       type: "file",
       name: node.label,
-      node: node,
-      active: is_active,
+      resource_type: node.resource_type,
       unique_id: node.unique_id,
       node_type: "exposure",
     });
@@ -483,24 +431,19 @@ function buildMetricTree(nodes: any, select: any) {
 
   _.each(nodes, function (node) {
     const project = node.package_name;
-    const is_active = node.unique_id == select;
 
     if (!metrics[project]) {
       metrics[project] = {
         type: "folder",
         name: project,
-        active: is_active,
         items: [],
       };
-    } else if (is_active) {
-      metrics[project].active = true;
     }
 
     metrics[project].items.push({
       type: "file",
       name: node.label,
-      node: node,
-      active: is_active,
+      resource_type: node.resource_type,
       unique_id: node.unique_id,
       node_type: "metric",
     });
@@ -579,7 +522,6 @@ function buildProjectTree(nodes: any, macros: any, select: any) {
     }
 
     var path = [node.package_name].concat(path_parts);
-    var is_active = node.unique_id == select;
 
     var dirpath = _.initial(path);
 
@@ -602,19 +544,15 @@ function buildProjectTree(nodes: any, macros: any, select: any) {
         cur_dir[dir] = {
           type: "folder",
           name: dir,
-          active: is_active,
           items: {},
         };
-      } else if (is_active) {
-        cur_dir[dir].active = true;
       }
       cur_dir = cur_dir[dir].items;
     });
     cur_dir[fname] = {
       type: "file",
       name: display_name,
-      node: node,
-      active: is_active,
+      resource_type: node.resource_type,
       unique_id: node.unique_id,
       node_type: node.resource_type,
     };
@@ -654,7 +592,6 @@ function buildDatabaseTree(nodes: any, select: any) {
     const database: any = {
       type: "database",
       name: db,
-      active: false,
       items: [],
     };
     databases[db] = database;
@@ -664,25 +601,18 @@ function buildDatabaseTree(nodes: any, select: any) {
       const schema: any = {
         type: "schema",
         name: schemaName,
-        active: false,
         items: [],
       };
 
       database.items.push(schema);
 
       _.each(schema_nodes, function (node) {
-        var is_active = node.unique_id == select;
-        if (is_active) {
-          database.active = true;
-          schema.active = true;
-        }
         schema.items.push({
           type: "table",
           name: node.identifier || node.alias || node.name,
-          node: node,
-          active: is_active,
           unique_id: node.unique_id,
           node_type: "model",
+          resource_type: node.resource_type,
         });
       });
     });
@@ -719,24 +649,18 @@ function buildGroupTree(nodes: any, select: any) {
 
     var group = node.group;
 
-    var is_active = node.unique_id == select;
-
     if (!groups[group]) {
       groups[group] = {
         type: "group",
         name: group,
-        active: is_active,
         items: [],
       };
-    } else if (is_active) {
-      groups[group].active = true;
     }
 
     groups[group].items.push({
       type: "file",
       name: name,
-      node: node,
-      active: is_active,
+      resource_type: node.resource_type,
       unique_id: node.unique_id,
       node_type: "model",
     });

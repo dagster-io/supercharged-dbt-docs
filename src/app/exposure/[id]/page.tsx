@@ -3,6 +3,7 @@ import * as projectService from "@/app/projectService";
 import { TableDetails } from "@/components/TableDetails";
 import { ReferenceList } from "@/components/ReferenceList";
 import { getParents } from "@/util/dagUtils";
+import { SetActive } from "@/components/SetActive";
 
 export default async function ExposurePage({
   params: { id },
@@ -39,6 +40,7 @@ export default async function ExposurePage({
   ];
   return (
     <div className="app-scroll">
+      <SetActive uniqueId={id} />
       <div className="app-links app-sticky">
         <div className="app-title">
           <div className="app-frame app-pad app-flush-bottom">

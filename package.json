@@ -39,7 +39,6 @@
     "autoprefixer": "^10.4.14",
     "concurrently": "^8.2.0",
     "postcss": "^8.4.27",
-    "quicktype": "^23.0.54",
-    "tailwindcss": "^3.3.3"
+    "quicktype": "^23.0.54"
   }
 }
