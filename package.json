@@ -29,6 +29,7 @@
     "react-dom": "18.2.0",
     "react-syntax-highlighter": "^15.5.0",
     "server-only": "^0.0.1",
+    "swr": "^2.2.0",
     "ts-node": "^10.9.1",
     "typescript": "5.1.6",
     "underscore": "^1.13.6"
@@ -38,7 +39,6 @@
     "autoprefixer": "^10.4.14",
     "concurrently": "^8.2.0",
     "postcss": "^8.4.27",
-    "quicktype": "^23.0.54",
-    "tailwindcss": "^3.3.3"
+    "quicktype": "^23.0.54"
   }
 }

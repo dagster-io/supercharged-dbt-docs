@@ -5,6 +5,7 @@ import { CodeBlock } from "@/components/CodeBlock";
 import { getReferences, getParents } from "@/util/dagUtils";
 import React from "react";
 import { MacroArguments } from "@/components/MacroArguments";
+import { SetActive } from "@/components/SetActive";
 
 export default async function MacroPage({
   params: { id },
@@ -37,6 +38,7 @@ export default async function MacroPage({
 
   return (
     <div className="app-scroll">
+      <SetActive uniqueId={id} />
       <div className="app-links app-sticky">
         <div className="app-title">
           <div className="app-frame app-pad app-flush-bottom">

@@ -5,6 +5,7 @@ import * as projectService from "@/app/projectService";
 import { ReferenceList } from "@/components/ReferenceList";
 import { CodeBlock } from "@/components/CodeBlock";
 import { getParents } from "@/util/dagUtils";
+import { SetActive } from "@/components/SetActive";
 
 export default async function OperationPage({
   params: { id },
@@ -25,6 +26,7 @@ export default async function OperationPage({
 
   return (
     <div className="app-scroll">
+      <SetActive uniqueId={id} />
       <div className="app-links app-sticky">
         <div className="app-title">
           <div className="app-frame app-pad app-flush-bottom">
