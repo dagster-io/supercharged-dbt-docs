@@ -22,7 +22,6 @@
     "deepmerge": "^4.3.1",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
-    "jotai": "^2.2.2",
     "lodash": "^4.17.21",
     "next": "^13.4.12",
     "node-ts": "^6.0.1",
