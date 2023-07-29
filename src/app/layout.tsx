@@ -46,9 +46,7 @@ export default async function RootLayout({
                 <div className="app-header app-navbar app-shadow app-pad">
                   <div className="app-row app-middle">
                     <div className="app-body">
-                      <div className="logo">
-                        <Logo />
-                      </div>
+                      <Logo />
                     </div>
                   </div>
                 </div>
