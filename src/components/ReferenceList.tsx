@@ -1,7 +1,6 @@
 import React from "react";
 import _ from "underscore";
 import { ReferenceListClient } from "./ReferenceListClient";
-import { serialize } from "@ungap/structured-clone";
 
 export const ReferenceList = ({
   references,
