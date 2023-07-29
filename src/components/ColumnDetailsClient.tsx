@@ -24,10 +24,6 @@ export const ColumnDetailsClient = ({ model }: { model: any }) => {
     forceRerender();
   }
 
-  function getState(node: any) {
-    return "dbt." + node.resource_type;
-  }
-
   function get_columns(model: any) {
     var columns = _.chain(model.columns).values().sortBy("index").value();
 
