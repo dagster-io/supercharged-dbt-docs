@@ -4,6 +4,7 @@ import { ReferenceList } from "@/components/ReferenceList";
 import { CodeBlock } from "@/components/CodeBlock";
 import { getParents } from "@/util/dagUtils";
 import { SetActive } from "@/components/SetActive";
+import { filterNodes } from "@/util/filterNodes";
 
 export default async function Analysispage({
   params: { id },
@@ -101,4 +102,8 @@ export default async function Analysispage({
       </div>
     </div>
   );
+}
+
+export async function generateStaticParams() {
+  return await filterNodes("analysis");
 }

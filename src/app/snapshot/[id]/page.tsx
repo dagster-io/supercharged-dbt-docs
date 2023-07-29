@@ -8,6 +8,7 @@ import { ReferenceList } from "@/components/ReferenceList";
 import { CodeBlock } from "@/components/CodeBlock";
 import { getReferences, getParents } from "@/util/dagUtils";
 import { SetActive } from "@/components/SetActive";
+import { filterNodes } from "@/util/filterNodes";
 
 export default async function SnapshotPage({
   params: { id },
@@ -142,4 +143,7 @@ export default async function SnapshotPage({
       </div>
     </div>
   );
+}
+export async function generateStaticParams() {
+  return await filterNodes("snapshot");
 }

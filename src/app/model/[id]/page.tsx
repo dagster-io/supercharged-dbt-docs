@@ -8,6 +8,7 @@ import { ReferenceList } from "@/components/ReferenceList";
 import { CodeBlock } from "@/components/CodeBlock";
 import { getReferences, getParents } from "@/util/dagUtils";
 import { SetActive } from "@/components/SetActive";
+import { filterNodes } from "@/util/filterNodes";
 
 export default async function ModelPage({
   params: { id },
@@ -144,3 +145,8 @@ export default async function ModelPage({
 }
 
 export const revalidate = Infinity;
+
+export async function generateStaticParams() {
+  const ids = await filterNodes("model");
+  return ids;
+}

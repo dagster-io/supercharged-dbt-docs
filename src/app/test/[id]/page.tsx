@@ -8,6 +8,7 @@ import { ReferenceList } from "@/components/ReferenceList";
 import { CodeBlock } from "@/components/CodeBlock";
 import { getReferences, getParents } from "@/util/dagUtils";
 import { SetActive } from "@/components/SetActive";
+import { filterNodes } from "@/util/filterNodes";
 
 export default async function Test({
   params: { id },
@@ -97,4 +98,8 @@ export default async function Test({
       </div>
     </div>
   );
+}
+
+export async function generateStaticParams() {
+  return await filterNodes("test");
 }

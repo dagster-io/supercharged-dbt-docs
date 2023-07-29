@@ -9,6 +9,7 @@ import { CodeBlock } from "@/components/CodeBlock";
 import { getReferences, getParents } from "@/util/dagUtils";
 import Link from "next/link";
 import { SetActive } from "@/components/SetActive";
+import { filterNodes } from "@/util/filterNodes";
 
 export default async function MetricPage({
   params: { id },
@@ -105,3 +106,7 @@ export default async function MetricPage({
 }
 
 export const revalidate = Infinity;
+
+export async function generateStaticParams() {
+  return await filterNodes("metric");
+}
