@@ -8,7 +8,7 @@ import { getReferences, getParents } from "@/util/dagUtils";
 import React from "react";
 import { SetActive } from "@/components/SetActive";
 import { filterNodes } from "@/util/filterNodes";
-import { generateSourceSQL } from "@/util/generateSource";
+import { generateSourceSQL } from "@/util/generateSourceSQL";
 
 export default async function SourcePage({
   params: { id },
@@ -21,7 +21,6 @@ export default async function SourcePage({
   const referencesLength = Object.keys(references).length;
   const parents = getParents(projectService.project, model);
   const parentsLength = Object.keys(parents).length;
-  const language = model.language;
 
   const versions = {
     "Sample SQL": generateSourceSQL(model),
@@ -122,7 +121,7 @@ export default async function SourcePage({
               <CodeBlock
                 versions={versions}
                 defaultVersion={"Sample SQL"}
-                language={language}
+                language={"sql"}
               />
             </div>
           </section>

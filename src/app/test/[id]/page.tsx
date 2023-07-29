@@ -19,7 +19,6 @@ export default async function Test({
   const model = projectService.project.nodes[id];
   const parents = getParents(projectService.project, model);
   const parentsLength = Object.keys(parents).length;
-  const language = model.language;
 
   const default_compiled = "\n-- compiled code not found for this model\n";
   const versions = {
@@ -90,7 +89,7 @@ export default async function Test({
               <CodeBlock
                 versions={versions}
                 defaultVersion={"Source"}
-                language={language}
+                language={"python"}
               />
             </div>
           </section>

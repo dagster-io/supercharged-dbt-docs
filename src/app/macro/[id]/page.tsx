@@ -131,7 +131,7 @@ export default async function MacroPage({
               <CodeBlock
                 versions={versions}
                 defaultVersion={defaultVersion}
-                language={macro.language}
+                language={"sql"}
               />
             </div>
           </section>

@@ -15,7 +15,6 @@ export default async function Analysispage({
   const model = projectService.project.nodes[id];
   const parents = getParents(projectService.project, model);
   const parentsLength = Object.keys(parents).length;
-  const language = model.language;
 
   const versions = {
     Source: model.raw_code,
@@ -94,7 +93,7 @@ export default async function Analysispage({
               <CodeBlock
                 versions={versions}
                 defaultVersion={"Source"}
-                language={language}
+                language={"python"}
               />
             </div>
           </section>

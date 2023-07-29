@@ -21,7 +21,6 @@ export default async function SnapshotPage({
   const referencesLength = Object.keys(references).length;
   const parents = getParents(projectService.project, model);
   const parentsLength = Object.keys(parents).length;
-  const language = model.language;
 
   var default_compiled = "Compiled SQL is not available for this snapshot";
   const versions = {
@@ -133,7 +132,7 @@ export default async function SnapshotPage({
               <CodeBlock
                 versions={versions}
                 defaultVersion={"Source"}
-                language={language}
+                language={"sql"}
               />
             </div>
           </section>

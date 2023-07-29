@@ -1,14 +1,14 @@
 import * as projectService from "@/app/projectService";
 
 // Filter out these id's due to build issues :(
-const badIds: any = {
+const badIds: Record<string, boolean> = {
   // Models have circular references somehow and client components are being SSRd and the props theyre passing to other client components are being serialized.
-  "model.gitlab_snowflake.netsuite_accounts": true,
-  "model.gitlab_snowflake.netsuite_budget": true,
-  "model.gitlab_snowflake.netsuite_customers": true,
-  "model.gitlab_snowflake.netsuite_departments": true,
-  "model.gitlab_snowflake.netsuite_transaction_lines": true,
-  "model.gitlab_snowflake.netsuite_transaction_lines_xf": true,
+  // "model.gitlab_snowflake.netsuite_accounts": true,
+  // "model.gitlab_snowflake.netsuite_budget": true,
+  // "model.gitlab_snowflake.netsuite_customers": true,
+  // "model.gitlab_snowflake.netsuite_departments": true,
+  // "model.gitlab_snowflake.netsuite_transaction_lines": true,
+  // "model.gitlab_snowflake.netsuite_transaction_lines_xf": true,
 
   // Names are too long:
   "test.gitlab_snowflake.accepted_values_zuora_base_mrr_amortized_product_category__GitHost__Other__SaaS_Ultimate__Basic__SaaS_Bronze__Self_Managed_Premium__Self_Managed_Starter__Self_Managed_Ultimate__Support__Plus__SaaS_Premium__Standard__Trueup__Storage__SaaS_Other__Dedicated_Ultimate.b7a4d3e47b":

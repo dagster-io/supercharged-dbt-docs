@@ -21,13 +21,14 @@ export default async function ModelPage({
   const referencesLength = Object.keys(references).length;
   const parents = getParents(projectService.project, model);
   const parentsLength = Object.keys(parents).length;
-  const language = model.language;
 
   const default_compiled = "\n-- compiled code not found for this model\n";
   const versions = {
     Source: model.raw_code || model.raw_sql || "",
     Compiled: model.compiled_code || model.compiled_sql || default_compiled,
   };
+
+  console.log({ model });
 
   return (
     <>
@@ -133,7 +134,7 @@ export default async function ModelPage({
                 <CodeBlock
                   versions={versions}
                   defaultVersion={"Source"}
-                  language={language}
+                  language={model.raw_sql ? "sql" : "python"}
                 />
               </div>
             </section>

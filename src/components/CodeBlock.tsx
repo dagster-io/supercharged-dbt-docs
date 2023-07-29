@@ -14,11 +14,6 @@ export const CodeBlock = ({
   language: string;
 }) => {
   const [selectedVersion, setSelectedVersion] = React.useState(defaultVersion);
-  const language_class = React.useMemo(
-    () => getLanguageClass(language),
-    [language]
-  );
-
   const source = versions[selectedVersion] || "";
 
   function titleCase(name: string) {
@@ -34,6 +29,7 @@ export const CodeBlock = ({
     }, 1000);
   }
 
+  console.log({ language });
   return (
     <>
       <h6>Code</h6>
@@ -66,11 +62,8 @@ export const CodeBlock = ({
           <div style={{ marginTop: "1px" }}>
             <SyntaxHighlighter
               language={language}
-              style={{ backgroundColor: "white" } as any}
               className="code line-numbers"
-              codeTagProps={{
-                className: `source-code highlight ${language_class}`,
-              }}
+              customStyle={{ background: "white" }}
             >
               {source.trim()}
             </SyntaxHighlighter>
@@ -80,7 +73,3 @@ export const CodeBlock = ({
     </>
   );
 };
-
-function getLanguageClass(language: string) {
-  return language === "python" ? "language-python" : "language-sql";
-}
