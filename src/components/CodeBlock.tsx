@@ -29,7 +29,6 @@ export const CodeBlock = ({
     }, 1000);
   }
 
-  console.log({ language });
   return (
     <>
       <h6>Code</h6>

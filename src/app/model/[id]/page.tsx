@@ -28,8 +28,6 @@ export default async function ModelPage({
     Compiled: model.compiled_code || model.compiled_sql || default_compiled,
   };
 
-  console.log({ model });
-
   return (
     <>
       <div className="app-scroll">
