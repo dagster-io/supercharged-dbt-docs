@@ -240,7 +240,6 @@ function getBaseStats(model: any) {
 }
 
 function getExtendedStats(stats: any) {
-  // TODO : This logic should be pushed into dbt's catalog generation
   var format: any = {
     rows: asNumber, // Redshift
     row_count: asNumber, // Snowflake

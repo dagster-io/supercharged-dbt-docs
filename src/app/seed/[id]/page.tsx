@@ -9,6 +9,7 @@ import { CodeBlock } from "@/components/CodeBlock";
 import { getReferences, getParents } from "@/util/dagUtils";
 import { SetActive } from "@/components/SetActive";
 import { filterNodes } from "@/util/filterNodes";
+import { generateSourceSQL } from "@/util/generateSourceSQL";
 
 export default async function SeedPage({
   params: { id },
@@ -23,7 +24,7 @@ export default async function SeedPage({
   const parentsLength = Object.keys(parents).length;
 
   const versions = {
-    "Example SQL": "", //codeService.generateSourceSQL($scope.model)
+    "Example SQL": generateSourceSQL(model),
   };
 
   return (

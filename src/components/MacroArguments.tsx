@@ -6,7 +6,7 @@ export const MacroArguments = ({ macro }: { macro: any }) => {
           <div>
             Details are not available for this macro. This may be due to the
             fact that this macro doesn&apos;t have any arguments or that they
-            haven't been documented yet.
+            haven&apos;t been documented yet.
           </div>
         ) : (
           <div

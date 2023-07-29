@@ -19,7 +19,6 @@ export const metadata: Metadata = {
   description: "built using React Server Components",
 };
 
-// TODO: remove?
 loadProject();
 
 export default async function RootLayout({

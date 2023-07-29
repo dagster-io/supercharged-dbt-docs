@@ -71,7 +71,6 @@ export function SearchBar() {
         onChange={(e) => {
           const newText = e.target.value;
           setSearchValue(newText);
-          // TODO: find a way to debounce the search query
         }}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}

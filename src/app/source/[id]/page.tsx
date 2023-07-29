@@ -4,7 +4,6 @@ import { TableDetails } from "@/components/TableDetails";
 import { ColumnDetails } from "@/components/ColumnDetails";
 import { ReferenceList } from "@/components/ReferenceList";
 import { CodeBlock } from "@/components/CodeBlock";
-import { getReferences, getParents } from "@/util/dagUtils";
 import React from "react";
 import { SetActive } from "@/components/SetActive";
 import { filterNodes } from "@/util/filterNodes";
@@ -16,14 +15,10 @@ export default async function SourcePage({
 }) {
   await projectService.loadProject();
   const model = projectService.project.nodes[id];
-  const references = getReferences(projectService.project, model);
-  const referencesLength = Object.keys(references).length;
-  const parents = getParents(projectService.project, model);
-  const parentsLength = Object.keys(parents).length;
   const language = model.language;
 
   const versions = {
-    "Sample SQL": "TODO", // TODO: codeService.generateSourceSQL($scope.model)
+    "Sample SQL": generateSourceSQL(model),
   };
 
   const extra_table_fields = [
@@ -88,7 +83,7 @@ export default async function SourcePage({
                   {model.description ? (
                     <div className="model-markdown">{model.description}</div>
                   ) : (
-                    <div ng-if="!model.description">
+                    <div>
                       This {model.resource_type} is not currently documented
                     </div>
                   )}
@@ -130,4 +125,7 @@ export default async function SourcePage({
 
 export async function generateStaticParams() {
   return await filterNodes("source");
+}
+function generateSourceSQL(model: any) {
+  throw new Error("Function not implemented.");
 }
