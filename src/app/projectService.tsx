@@ -6,6 +6,7 @@ import path from "path";
 import _ from "lodash";
 import merge from "deepmerge";
 import { getQuoteChar } from "./compat";
+import { getShortID } from "@/util/nodeUrl";
 
 function capitalizeType(type: any) {
   const staticCapitalizations: any = {
@@ -61,7 +62,24 @@ export function match_dict_keys(dest_keys: string[], obj: any) {
   return new_obj;
 }
 
+function remapNodeIds(source: any): any {
+  Object.keys(source).forEach((key) => {
+    const shortId = getShortID(key);
+    const node = source[key];
+    delete source[key];
+    node.unique_id = shortId;
+    source[shortId] = node;
+  });
+}
+
 function incorporate_catalog(manifest: any, catalog: any): any {
+  remapNodeIds(catalog.nodes);
+  remapNodeIds(catalog.sources);
+  remapNodeIds(manifest.nodes);
+  remapNodeIds(manifest.sources);
+  remapNodeIds(manifest.exposures);
+  remapNodeIds(manifest.metrics);
+
   // Re-combine sources and nodes
   _.each(catalog.sources, function (source, source_id) {
     catalog.nodes[source_id] = source;
@@ -226,7 +244,7 @@ async function loadProjectImpl() {
       } else {
         model = depends_on[0];
       }
-      var node = incorporatedProject.nodes[model];
+      var node = incorporatedProject.nodes[getShortID(model)];
       var quote_char = getQuoteChar(incorporatedProject.metadata);
       var column = _.find(node.columns, function (_, col_name) {
         // strip quotes from start and end of test column if present in both locations

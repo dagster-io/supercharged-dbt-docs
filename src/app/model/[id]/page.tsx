@@ -146,6 +146,5 @@ export default async function ModelPage({
 export const revalidate = Infinity;
 
 export async function generateStaticParams() {
-  const ids = await filterNodes("model");
-  return ids;
+  return await filterNodes("model");
 }

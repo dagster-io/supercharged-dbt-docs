@@ -1,3 +1,5 @@
+import { getShortID } from "./nodeUrl";
+
 const _ = require("underscore");
 
 export function getReferences(project: any, model: any) {
@@ -7,7 +9,7 @@ export function getReferences(project: any, model: any) {
       node.depends_on.nodes &&
       node.depends_on.nodes.length
     ) {
-      if (_.contains(node.depends_on.nodes, model.unique_id)) {
+      if (_.contains(mapToShortIds(node.depends_on.nodes), model.unique_id)) {
         return true;
       }
     }
@@ -24,7 +26,7 @@ export function getParents(project: any, model: any) {
       model.depends_on.nodes &&
       model.depends_on.nodes.length
     ) {
-      if (_.contains(model.depends_on.nodes, node.unique_id)) {
+      if (_.contains(mapToShortIds(model.depends_on.nodes), node.unique_id)) {
         return true;
       }
     }
@@ -37,7 +39,7 @@ export function getParents(project: any, model: any) {
       model.depends_on.macros &&
       model.depends_on.macros.length
     ) {
-      if (_.contains(model.depends_on.macros, macro.unique_id)) {
+      if (_.contains(mapToShortIds(model.depends_on.macros), macro.unique_id)) {
         return true;
       }
     }
@@ -54,7 +56,7 @@ export function getMacroReferences(project: any, self: any) {
       node.depends_on.macros &&
       node.depends_on.macros.length
     ) {
-      if (_.contains(node.depends_on.macros, self.unique_id)) {
+      if (_.contains(mapToShortIds(node.depends_on.macros), self.unique_id)) {
         return true;
       }
     }
@@ -67,7 +69,7 @@ export function getMacroReferences(project: any, self: any) {
       macro.depends_on.macros &&
       macro.depends_on.macros.length
     ) {
-      if (_.contains(macro.depends_on.macros, self.unique_id)) {
+      if (_.contains(mapToShortIds(macro.depends_on.macros), self.unique_id)) {
         return true;
       }
     }
@@ -84,7 +86,7 @@ export function getMacroParents(project: any, self: any) {
       self.depends_on.macros &&
       self.depends_on.macros.length
     ) {
-      if (_.contains(self.depends_on.macros, macro.unique_id)) {
+      if (_.contains(mapToShortIds(self.depends_on.macros), macro.unique_id)) {
         return true;
       }
     }
@@ -92,4 +94,8 @@ export function getMacroParents(project: any, self: any) {
   });
 
   return _.groupBy(macroParents, "resource_type");
+}
+
+function mapToShortIds(arr: string[]) {
+  return arr.map((id) => getShortID(id));
 }

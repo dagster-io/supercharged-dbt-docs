@@ -3,6 +3,7 @@
 import React from "react";
 import _ from "underscore";
 import Link from "next/link";
+import { getNodeUrl } from "@/util/nodeUrl";
 
 export const ReferenceListClient = ({
   references,
@@ -81,8 +82,4 @@ function mapResourceType(type: string) {
   } else {
     return "Nodes";
   }
-}
-
-function getNodeUrl(node: any) {
-  return "/" + node.resource_type + "/" + node.unique_id;
 }
