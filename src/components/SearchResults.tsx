@@ -2,6 +2,7 @@ import _ from "lodash";
 import Link from "next/link";
 import React from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
+import { getNodeUrl } from "@/util/nodeUrl";
 
 function fuzzySearchObj(query: string, obj: any) {
   var objects = [];
@@ -529,8 +530,4 @@ export function SearchResults({
       </div>
     </div>
   );
-}
-
-function getNodeUrl(node: any) {
-  return "/" + node.resource_type + "/" + node.unique_id;
 }

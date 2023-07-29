@@ -6,6 +6,7 @@ import { getReferences, getParents } from "@/util/dagUtils";
 import React from "react";
 import { MacroArguments } from "@/components/MacroArguments";
 import { SetActive } from "@/components/SetActive";
+import { getShortID } from "@/util/nodeUrl";
 
 export default async function MacroPage({
   params: { id },
@@ -143,5 +144,7 @@ export default async function MacroPage({
 
 export async function generateStaticParams() {
   await projectService.loadProject();
-  return Object.keys(projectService.project.macros).map((id) => ({ id }));
+  return Object.keys(projectService.project.macros).map((id) => ({
+    id: getShortID(id),
+  }));
 }

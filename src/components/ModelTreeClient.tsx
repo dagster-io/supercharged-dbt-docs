@@ -213,6 +213,9 @@ const ModelTreeLine = ({
   setActive: (uniqueId: string) => void;
 }) => {
   const name = item.name;
+  if (!name) {
+    debugger;
+  }
   const end = _.last(name, 15).join("");
   const start = _.initial(name, end.length).join("");
 
