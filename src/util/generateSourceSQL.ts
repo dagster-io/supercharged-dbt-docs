@@ -1,3 +1,5 @@
+import _ from "underscore";
+
 export function generateSourceSQL(model: any) {
   var query = ["select"];
 

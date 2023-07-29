@@ -3,17 +3,14 @@
 import React from "react";
 import _ from "underscore";
 import Link from "next/link";
-import { deserialize } from "@ungap/structured-clone";
 
 export const ReferenceListClient = ({
-  references: rawReferences,
-  node: rawNode,
+  references,
+  node,
 }: {
   references: any;
   node?: any;
 }) => {
-  const references = deserialize(rawReferences);
-  const node = deserialize(rawNode);
   const hasReferences = references && _.size(references) > 0;
   const [selectedType, setSelectedType] = React.useState(() => {
     if (hasReferences) {

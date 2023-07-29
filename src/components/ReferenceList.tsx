@@ -12,8 +12,8 @@ export const ReferenceList = ({
 }) => {
   return (
     <ReferenceListClient
-      references={serialize(references)}
-      node={serialize(_.pick(node, ["resource_type", "name", "unique_id"]))}
+      references={references}
+      node={_.pick(node, ["resource_type", "name", "unique_id"])}
     />
   );
 };

@@ -194,7 +194,7 @@ async function loadProjectImpl() {
       if (rel_model && test.test_metadata.kwargs.field) {
         // FKs get extra fields
         test_info.fk_field = test.test_metadata.kwargs.field;
-        test_info.fk_model = rel_model;
+        test_info.fk_model = _.pick(rel_model, ["unique_id", "name"]);
       }
 
       test_info.short = "F";

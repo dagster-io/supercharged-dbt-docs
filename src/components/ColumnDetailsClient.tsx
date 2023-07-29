@@ -1,10 +1,10 @@
 "use client";
-import { deserialize } from "@ungap/structured-clone";
 import React from "react";
 import _ from "underscore";
+import { useSearchParams } from "next/navigation";
 
-export const ColumnDetailsClient = ({ model: rawModel }: { model: any }) => {
-  const model = deserialize(rawModel);
+export const ColumnDetailsClient = ({ model }: { model: any }) => {
+  useSearchParams();
   const [_unused, forceRerender] = React.useReducer((s) => s + 1, 0);
   function has_test(col: any, test_name: any) {
     var test_types = _.pluck(col.tests, "short");
