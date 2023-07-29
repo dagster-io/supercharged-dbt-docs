@@ -4,6 +4,7 @@ import Link from "next/link";
 import React from "react";
 import _ from "underscore";
 import useSWR from "swr";
+import { getNodeUrl } from "@/util/nodeUrl";
 
 // Used before the data is loading to store which item was set as active
 let _currentActive: string | null = null;
@@ -237,7 +238,7 @@ const ModelTreeLine = ({
   return (
     <li className="unselectable">
       {item.unique_id ? (
-        <Link href={`/${item.resource_type}/${item.unique_id}`} legacyBehavior>
+        <Link href={getNodeUrl(item)} legacyBehavior>
           <a
             className={`unselectable ${className}`}
             onClick={() => {

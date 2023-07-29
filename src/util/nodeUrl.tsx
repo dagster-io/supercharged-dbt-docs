@@ -9,7 +9,7 @@ export function getShortID(id: string) {
 }
 
 export function getNodeUrl(node: any) {
-  return "/" + node.resource_type + "/" + node.unique_id;
+  return "/" + node.resource_type + "/" + node.unique_id + "/";
 }
 
 function cyrb53(str: string, seed: number = 0) {

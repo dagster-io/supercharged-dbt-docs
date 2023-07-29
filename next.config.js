@@ -11,6 +11,8 @@ const nextConfig = {
   },
 
   output: "export",
+  trailingSlash: true,
+  distDir: "dist/supercharged",
 };
 
 module.exports = nextConfig;

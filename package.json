@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "preprocess-json": "ts-node --project tsconfig.json process-json.ts",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "update-schemas": "concurrently 'quicktype -o src/schemas/manifest.ts -t manifest --src-lang schema https://schemas.getdbt.com/dbt/manifest/v6.json' 'quicktype -o src/schemas/catalog.ts -t catalog --src-lang schema https://schemas.getdbt.com/dbt/catalog/v1.json'"
+    "update-schemas": "concurrently 'quicktype -o src/schemas/manifest.ts -t manifest --src-lang schema https://schemas.getdbt.com/dbt/manifest/v6.json' 'quicktype -o src/schemas/catalog.ts -t catalog --src-lang schema https://schemas.getdbt.com/dbt/catalog/v1.json'",
+    "postinstall": "patch-package",
+    "serve": "make all && concurrently 'cd dist/original && ../../.venv/bin/python -m httpcompressionserver --bind 0.0.0.0 8081' 'cd dist/supercharged && ../../.venv/bin/python -m httpcompressionserver --bind 0.0.0.0 8082'"
   },
   "dependencies": {
     "@tanstack/react-virtual": "3.0.0-beta.18",
@@ -40,7 +41,9 @@
     "@types/react-syntax-highlighter": "^15.5.7",
     "autoprefixer": "^10.4.14",
     "concurrently": "^8.2.0",
+    "patch-package": "^8.0.0",
     "postcss": "^8.4.27",
+    "postinstall-postinstall": "^2.1.0",
     "quicktype": "^23.0.54"
   }
 }
