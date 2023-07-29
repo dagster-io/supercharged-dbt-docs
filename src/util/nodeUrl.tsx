@@ -1,11 +1,11 @@
 export function getShortID(id: string) {
   // allow 200 characters for the file name
-  // if (id.length <= 230) {
-  //   return id;
-  // }
+  if (id.length <= 230) {
+    return id;
+  }
   const safe = id.slice(0, 200);
   const end = id.slice(200);
-  return safe + (id.length > 200 ? "." + cyrb53(end) : "");
+  return safe + "." + cyrb53(end);
 }
 
 export function getNodeUrl(node: any) {
