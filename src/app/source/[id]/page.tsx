@@ -4,9 +4,11 @@ import { TableDetails } from "@/components/TableDetails";
 import { ColumnDetails } from "@/components/ColumnDetails";
 import { ReferenceList } from "@/components/ReferenceList";
 import { CodeBlock } from "@/components/CodeBlock";
+import { getReferences, getParents } from "@/util/dagUtils";
 import React from "react";
 import { SetActive } from "@/components/SetActive";
 import { filterNodes } from "@/util/filterNodes";
+import { generateSourceSQL } from "@/util/generateSource";
 
 export default async function SourcePage({
   params: { id },
@@ -15,6 +17,10 @@ export default async function SourcePage({
 }) {
   await projectService.loadProject();
   const model = projectService.project.nodes[id];
+  const references = getReferences(projectService.project, model);
+  const referencesLength = Object.keys(references).length;
+  const parents = getParents(projectService.project, model);
+  const parentsLength = Object.keys(parents).length;
   const language = model.language;
 
   const versions = {
@@ -58,9 +64,11 @@ export default async function SourcePage({
             <li>
               <a href="#columns">Columns</a>
             </li>
-            <li ng-show="referencesLength != 0">
-              <a href="#referenced_by">Referenced By</a>
-            </li>
+            {parentsLength ? (
+              <li>
+                <a href="#referenced_by">Referenced By</a>
+              </li>
+            ) : null}
             <li>
               <a href="#code">SQL</a>
             </li>
@@ -98,14 +106,15 @@ export default async function SourcePage({
               <ColumnDetails model={model} />
             </div>
           </section>
-
-          <section className="section" ng-show="referencesLength != 0">
-            <div className="section-target" id="referenced_by"></div>
-            <div className="section-content">
-              <h6>Referenced By</h6>
-              <ReferenceList references={references} node={model} />
-            </div>
-          </section>
+          {referencesLength ? (
+            <section className="section">
+              <div className="section-target" id="referenced_by"></div>
+              <div className="section-content">
+                <h6>Referenced By</h6>
+                <ReferenceList references={references} node={model} />
+              </div>
+            </section>
+          ) : null}
 
           <section className="section">
             <div className="section-target" id="code"></div>
@@ -125,7 +134,4 @@ export default async function SourcePage({
 
 export async function generateStaticParams() {
   return await filterNodes("source");
-}
-function generateSourceSQL(model: any) {
-  throw new Error("Function not implemented.");
 }

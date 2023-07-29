@@ -50,29 +50,27 @@ export default async function SnapshotPage({
         </div>
         <div className="app-frame app-pad-h">
           <ul className="nav nav-tabs">
-            <li ui-sref-active="active">
-              <a ui-sref="dbt.snapshot({'#': 'details'})">Details</a>
+            <li>
+              <a href="#details">Details</a>
             </li>
-            <li ui-sref-active="active">
-              <a ui-sref="dbt.snapshot({'#': 'description'})">Description</a>
+            <li>
+              <a href="#description">Description</a>
             </li>
-            <li ui-sref-active="active">
-              <a ui-sref="dbt.snapshot({'#': 'columns'})">Columns</a>
+            <li>
+              <a href="#columns">Columns</a>
             </li>
             {referencesLength ? (
-              <li ui-sref-active="active">
-                <a ui-sref="dbt.snapshot({'#': 'referenced_by'})">
-                  Referenced By
-                </a>
+              <li>
+                <a href="#referenced_by">Referenced By</a>
               </li>
             ) : null}
             {parentsLength ? (
-              <li ui-sref-active="active">
-                <a ui-sref="dbt.snapshot({'#': 'depends_on'})">Depends On</a>
+              <li>
+                <a href="#depends_on">Depends On</a>
               </li>
             ) : null}
-            <li ui-sref-active="active">
-              <a ui-sref="dbt.snapshot({'#': 'code'})">SQL</a>
+            <li>
+              <a href="#code">SQL</a>
             </li>
           </ul>
         </div>

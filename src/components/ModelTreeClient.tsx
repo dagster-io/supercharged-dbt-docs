@@ -63,7 +63,7 @@ export function ModelTreeClient() {
       <div className="menu">
         <ul>
           <li>
-            <a ui-sref="dbt.overview()" className="menu-link menu-main">
+            <a href="/overview" className="menu-link menu-main">
               Overview
             </a>
           </li>

@@ -49,10 +49,10 @@ export default async function ExposurePage({
               <span className="break">{exposure.label}</span>
               <small>exposure</small>
 
-              <div className="pull-right" ng-show="exposure.url">
+              <div className="pull-right">
                 <a
                   className="btn text-white btn-primary btn-sm"
-                  ng-href="{exposure.url}"
+                  href={exposure.url}
                   target="_blank"
                 >
                   View this exposure
@@ -65,15 +65,17 @@ export default async function ExposurePage({
         </div>
         <div className="app-frame app-pad-h">
           <ul className="nav nav-tabs">
-            <li ui-sref-active="active">
-              <a ui-sref="dbt.exposure({'#': 'details'})">Details</a>
+            <li>
+              <a href="#details">Details</a>
             </li>
-            <li ui-sref-active="active">
-              <a ui-sref="dbt.exposure({'#': 'description'})">Description</a>
+            <li>
+              <a href="#description">Description</a>
             </li>
-            <li ui-sref-active="active" ng-show="parentsLength != 0">
-              <a ui-sref="dbt.exposure({'#': 'depends_on'})">Depends On</a>
-            </li>
+            {parentsLength ? (
+              <li>
+                <a href="#depends_on">Depends On</a>
+              </li>
+            ) : null}
           </ul>
         </div>
       </div>
@@ -103,7 +105,7 @@ export default async function ExposurePage({
           </section>
 
           {parentsLength ? (
-            <section className="section" ng-show="parentsLength != 0">
+            <section className="section">
               <div className="section-target" id="depends_on"></div>
               <div className="section-content">
                 <h6>Depends On</h6>

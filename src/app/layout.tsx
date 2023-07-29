@@ -132,9 +132,6 @@ export const SearchWrapper = ({
           {children}
         </Suspense>
       </div>
-      {/* <div className="app-body" ng-show="search.is_focused">
-        {search}
-      </div> */}
     </div>
   );
 };
