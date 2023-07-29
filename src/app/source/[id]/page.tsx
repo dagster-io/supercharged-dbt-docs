@@ -7,6 +7,7 @@ import { CodeBlock } from "@/components/CodeBlock";
 import { getReferences, getParents } from "@/util/dagUtils";
 import React from "react";
 import { SetActive } from "@/components/SetActive";
+import { filterNodes } from "@/util/filterNodes";
 
 export default async function SourcePage({
   params: { id },
@@ -125,4 +126,8 @@ export default async function SourcePage({
       </div>
     </div>
   );
+}
+
+export async function generateStaticParams() {
+  return await filterNodes("source");
 }

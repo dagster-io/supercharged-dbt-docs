@@ -4,6 +4,7 @@ import { TableDetails } from "@/components/TableDetails";
 import { ReferenceList } from "@/components/ReferenceList";
 import { getParents } from "@/util/dagUtils";
 import { SetActive } from "@/components/SetActive";
+import { filterNodes } from "@/util/filterNodes";
 
 export default async function ExposurePage({
   params: { id },
@@ -114,4 +115,8 @@ export default async function ExposurePage({
       </div>
     </div>
   );
+}
+
+export async function generateStaticParams() {
+  return await filterNodes("exposure");
 }

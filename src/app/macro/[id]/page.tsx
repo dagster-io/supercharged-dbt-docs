@@ -140,3 +140,8 @@ export default async function MacroPage({
     </div>
   );
 }
+
+export async function generateStaticParams() {
+  await projectService.loadProject();
+  return Object.keys(projectService.project.macros).map((id) => ({ id }));
+}

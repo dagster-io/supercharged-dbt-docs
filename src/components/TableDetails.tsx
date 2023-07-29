@@ -1,4 +1,5 @@
 "use strict";
+import "server-only";
 
 import _ from "underscore";
 import React from "react";

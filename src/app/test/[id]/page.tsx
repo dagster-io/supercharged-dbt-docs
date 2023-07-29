@@ -8,6 +8,7 @@ import { ReferenceList } from "@/components/ReferenceList";
 import { CodeBlock } from "@/components/CodeBlock";
 import { getReferences, getParents } from "@/util/dagUtils";
 import { SetActive } from "@/components/SetActive";
+import { filterNodes } from "@/util/filterNodes";
 
 export default async function Test({
   params: { id },
@@ -97,4 +98,15 @@ export default async function Test({
       </div>
     </div>
   );
+}
+
+const badIds = [
+  "test.gitlab_snowflake.accepted_values_zuora_base_mrr_amortized_product_category__GitHost__Other__SaaS_Ultimate__Basic__SaaS_Bronze__Self_Managed_Premium__Self_Managed_Starter__Self_Managed_Ultimate__Support__Plus__SaaS_Premium__Standard__Trueup__Storage__SaaS_Other__Dedicated_Ultimate.b7a4d3e47b",
+  "test.gitlab_snowflake.accepted_values_zuora_monthly_recurring_revenue_product_category__GitHost__Other__SaaS_Ultimate__Basic__SaaS_Bronze__Self_Managed_Premium__Self_Managed_Starter__Self_Managed_Ultimate__Support__Plus__SaaS_Premium__Standard__Trueup__Storage__SaaS_Other__Dedicated_Ultimate.e516ff2ad4",
+  "test.gitlab_snowflake.accepted_values_zuora_rate_plan_product_category__GitHost__Other__SaaS_Ultimate__Basic__SaaS_Bronze__Self_Managed_Premium__Self_Managed_Starter__Self_Managed_Ultimate__Support__Plus__SaaS_Premium__Standard__Trueup__Storage__SaaS_Other__Dedicated_Ultimate.a7555b1b37",
+  "test.gitlab_snowflake.dbt_utils_relationships_where_fct_crm_person_dim_crm_account_id__dim_crm_account_id__GREATEST_IFNULL_lead_created_date_1999_01_01_IFNULL_contact_created_date_1999_01_01_DATEADD_day_2_CURRENT_DATE_DATE__ref_dim_crm_account_.91247632de",
+];
+
+export async function generateStaticParams() {
+  return await filterNodes("test");
 }
