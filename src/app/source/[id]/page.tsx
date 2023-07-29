@@ -19,8 +19,6 @@ export default async function SourcePage({
   const model = projectService.project.nodes[id];
   const references = getReferences(projectService.project, model);
   const referencesLength = Object.keys(references).length;
-  const parents = getParents(projectService.project, model);
-  const parentsLength = Object.keys(parents).length;
 
   const versions = {
     "Sample SQL": generateSourceSQL(model),
@@ -63,7 +61,7 @@ export default async function SourcePage({
             <li>
               <a href="#columns">Columns</a>
             </li>
-            {parentsLength ? (
+            {referencesLength ? (
               <li>
                 <a href="#referenced_by">Referenced By</a>
               </li>
