@@ -262,7 +262,14 @@ const ModelTreeLine = ({
           </a>
         </Link>
       ) : (
-        <a
+        <Link
+          href={
+            resourceType === "source"
+              ? `/source_list/${item.name}`
+              : item.type !== "database"
+              ? `/overview/${item.name}`
+              : "#"
+          }
           className={`unselectable ${className}`}
           onClick={() => {
             setIsOpen((isOpen) => !isOpen);
@@ -280,7 +287,7 @@ const ModelTreeLine = ({
             <span className="filename-ellip">{start}</span>
             <span className="filename-normal">{end}</span>
           </span>
-        </a>
+        </Link>
       )}
 
       {isOpen && item.items?.length ? (
