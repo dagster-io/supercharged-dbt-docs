@@ -1,0 +1,1 @@
+self.__SSG_MANIFEST=new Set(["\u002Fanalysis\u002F[id]","\u002Fexposure\u002F[id]","\u002Fmacro\u002F[id]","\u002Fmetric\u002F[id]","\u002Fmodel\u002F[id]","\u002Foperation\u002F[id]","\u002Fseed\u002F[id]","\u002Fsnapshot\u002F[id]","\u002Fsource\u002F[id]","\u002Ftest\u002F[id]"]);self.__SSG_MANIFEST_CB&&self.__SSG_MANIFEST_CB()
