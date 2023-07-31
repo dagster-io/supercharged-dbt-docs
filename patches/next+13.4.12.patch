@@ -1,12 +1,12 @@
 diff --git a/node_modules/next/dist/client/components/router-reducer/fetch-server-response.js b/node_modules/next/dist/client/components/router-reducer/fetch-server-response.js
-index cd8dd63..8abdae7 100644
+index cd8dd63..0b05c77 100644
 --- a/node_modules/next/dist/client/components/router-reducer/fetch-server-response.js
 +++ b/node_modules/next/dist/client/components/router-reducer/fetch-server-response.js
 @@ -48,6 +48,10 @@ async function fetchServerResponse(url, flightRouterState, nextUrl, currentBuild
          let fetchUrl = new URL(url);
          if (process.env.NODE_ENV === "production") {
              if (process.env.__NEXT_CONFIG_OUTPUT === "export") {
-+                if (process.env.__NEXT_TRAILING_SLASH) {
++                if (!fetchUrl.pathname.endsWith("/") && process.env.__NEXT_TRAILING_SLASH) {
 +                    fetchUrl.pathname += "/";
 +                }
 +                
@@ -14,14 +14,14 @@ index cd8dd63..8abdae7 100644
                      fetchUrl.pathname += "index.txt";
                  } else {
 diff --git a/node_modules/next/dist/esm/client/components/router-reducer/fetch-server-response.js b/node_modules/next/dist/esm/client/components/router-reducer/fetch-server-response.js
-index b045372..3bcfddd 100644
+index b045372..c9c7c76 100644
 --- a/node_modules/next/dist/esm/client/components/router-reducer/fetch-server-response.js
 +++ b/node_modules/next/dist/esm/client/components/router-reducer/fetch-server-response.js
 @@ -42,6 +42,10 @@ function doMpaNavigation(url) {
          let fetchUrl = new URL(url);
          if (process.env.NODE_ENV === "production") {
              if (process.env.__NEXT_CONFIG_OUTPUT === "export") {
-+                if (process.env.__NEXT_TRAILING_SLASH) {
++                if (!fetchUrl.pathname.endsWith("/") && process.env.__NEXT_TRAILING_SLASH) {
 +                    fetchUrl.pathname += "/";
 +                }
 +                
