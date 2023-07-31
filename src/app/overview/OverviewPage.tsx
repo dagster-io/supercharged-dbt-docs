@@ -1,4 +1,4 @@
-import { loadProject, project } from "@/app/projectService";
+import { getModelTree, loadProject, project } from "@/app/projectService";
 import { MarkdownBlock } from "@/components/MarkdownBlock";
 import _ from "lodash";
 

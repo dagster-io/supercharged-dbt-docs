@@ -368,7 +368,6 @@ function updateSelectedInTree(uniqueId: string, subtrees: any) {
 function updateSelected(uniqueId: string, tree: any) {
   updateSelectedInTree(uniqueId, tree.project);
   updateSelectedInTree(uniqueId, tree.database);
-  updateSelectedInTree(uniqueId, tree.groups);
   updateSelectedInTree(uniqueId, tree.sources);
   updateSelectedInTree(uniqueId, tree.exposures);
   updateSelectedInTree(uniqueId, tree.metrics);
