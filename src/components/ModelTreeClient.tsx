@@ -268,9 +268,9 @@ const ModelTreeLine = ({
         <Link
           href={
             resourceType === "source"
-              ? `/source_list/${item.name}`
+              ? `/source_list/${item.name}/`
               : resourceType !== "database"
-              ? `/overview/${item.name}`
+              ? `/overview/${item.name}/`
               : "#"
           }
           className={`unselectable ${className}`}
