@@ -7,6 +7,7 @@ import React from "react";
 import { MacroArguments } from "@/components/MacroArguments";
 import { SetActive } from "@/components/SetActive";
 import { getShortID } from "@/util/nodeUrl";
+import { MarkdownBlock } from "@/components/MarkdownBlock";
 
 export default async function MacroPage({
   params: { id },
@@ -88,7 +89,9 @@ export default async function MacroPage({
               <div className="panel">
                 <div className="panel-body">
                   {macro.description ? (
-                    <div className="model-markdown">{macro.description}</div>
+                    <div className="model-markdown">
+                      <MarkdownBlock markdown={macro.description} />
+                    </div>
                   ) : (
                     <div>
                       This {macro.resource_type} is not currently documented

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import _ from "underscore";
+import { MarkdownBlock } from "./MarkdownBlock";
 
 export const ColumnDetailsClient = ({ model }: { model: any }) => {
   const [_unused, forceRerender] = React.useReducer((s) => s + 1, 0);
@@ -233,7 +234,11 @@ export const ColumnDetailsClient = ({ model }: { model: any }) => {
                             {column.description?.length ? (
                               <div style={{ marginBottom: "15px" }}>
                                 <h5>Description</h5>
-                                <span>{column.description}</span>
+                                <span>
+                                  <MarkdownBlock
+                                    markdown={column.description}
+                                  />
+                                </span>
                               </div>
                             ) : null}
                             {column.tests && column.tests.length ? (

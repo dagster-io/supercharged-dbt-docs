@@ -5,6 +5,7 @@ import { ReferenceList } from "@/components/ReferenceList";
 import { getParents } from "@/util/dagUtils";
 import { SetActive } from "@/components/SetActive";
 import { filterNodes } from "@/util/filterNodes";
+import { MarkdownBlock } from "@/components/MarkdownBlock";
 
 export default async function ExposurePage({
   params: { id },
@@ -93,7 +94,9 @@ export default async function ExposurePage({
               <div className="panel">
                 <div className="panel-body">
                   {exposure.description ? (
-                    <div className="model-markdown">{exposure.description}</div>
+                    <div className="model-markdown">
+                      <MarkdownBlock markdown={exposure.description} />
+                    </div>
                   ) : (
                     <div>
                       This {exposure.resource_type} is not currently documented
