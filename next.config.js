@@ -13,6 +13,7 @@ const nextConfig = {
   output: "export",
   trailingSlash: true,
   distDir: "dist/supercharged",
+  basePath: process.env.BASE_PATH,
 };
 
 module.exports = nextConfig;
