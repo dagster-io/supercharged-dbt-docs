@@ -27,7 +27,10 @@ export function ModelTreeClient() {
     "project" | "database"
   >("project");
 
-  const { data } = useSWR("/treedata", fetcher);
+  const { data } = useSWR(
+    `${process.env.NEXT_PUBLIC_BASE_PATH}/treedata`,
+    fetcher
+  );
   const tree = data || emptyObject;
 
   const [_unused, forceRerender] = React.useReducer((s) => s + 1, 0);

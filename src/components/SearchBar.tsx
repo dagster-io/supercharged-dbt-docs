@@ -52,7 +52,9 @@ export function SearchBar() {
   }, [container, searchValue]);
 
   const { data, isLoading } = useSWR(
-    isFocused || searchValue.trim().length > 0 ? "/searchdata" : null,
+    isFocused || searchValue.trim().length > 0
+      ? `${process.env.NEXT_PUBLIC_BASE_PATH}/searchdata`
+      : null,
     fetcher
   );
   const isSearching = isLoading;
