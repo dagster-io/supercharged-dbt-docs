@@ -3,6 +3,8 @@ import { TableDetails } from "@/components/TableDetails";
 import { SourceRow } from "./SourceRow";
 import { loadProject, project } from "@/app/projectService";
 import _ from "underscore";
+import * as projectService from "@/app/projectService";
+import { getShortID } from "@/util/nodeUrl";
 
 export default async function SourceListPage({
   params: { id },
@@ -202,5 +204,18 @@ export default async function SourceListPage({
         </div>
       </div>
     </>
+  );
+}
+
+export async function generateStaticParams() {
+  await projectService.loadProject();
+  const nodes = projectService.project.nodes;
+  return (
+    Object.keys(nodes)
+      .filter((id) => nodes[id].resource_type === "source")
+      .map((id) => nodes[id].source_name)
+      // Unique IDs only
+      .filter((id, idx, arr) => arr.indexOf(id) === idx)
+      .map((id) => ({ id: getShortID(id) }))
   );
 }
