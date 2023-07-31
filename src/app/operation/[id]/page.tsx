@@ -7,6 +7,7 @@ import { CodeBlock } from "@/components/CodeBlock";
 import { getParents } from "@/util/dagUtils";
 import { SetActive } from "@/components/SetActive";
 import { filterNodes } from "@/util/filterNodes";
+import { MarkdownBlock } from "@/components/MarkdownBlock";
 
 export default async function OperationPage({
   params: { id },
@@ -61,7 +62,9 @@ export default async function OperationPage({
               <div className="panel">
                 <div className="panel-body">
                   {model.description ? (
-                    <div className="model-markdown">{model.description}</div>
+                    <div className="model-markdown">
+                      <MarkdownBlock markdown={model.description} />
+                    </div>
                   ) : (
                     <div>
                       This {model.resource_type} is not currently documented

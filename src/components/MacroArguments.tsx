@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { MarkdownBlock } from "./MarkdownBlock";
 
 export const MacroArguments = ({ macro }: { macro: any }) => {
   return (
@@ -103,7 +104,9 @@ function MacroArgumentRow({
             <div style={{ padding: "5px 20px" }}>
               <div style={{ marginBottom: "15px" }}>
                 <h5>Description</h5>
-                <span>{arg.description}</span>
+                <span>
+                  <MarkdownBlock markdown={arg.description} />
+                </span>
               </div>
             </div>
           </td>

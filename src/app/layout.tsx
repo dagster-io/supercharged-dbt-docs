@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import Icons from "@/svgs/icons";
 import Logo from "@/svgs/logo";
 import Glyphs from "@/svgs/glyphs";
-import { loadProject, project } from "./projectService";
+import { loadProject } from "./projectService";
 import React, { Suspense } from "react";
 import _ from "underscore";
 import { GraphLauncher } from "@/components/GraphLauncher";
@@ -23,13 +23,8 @@ loadProject();
 
 export default async function RootLayout({
   children,
-  search,
-  test,
-  ...rest
 }: {
   children: React.ReactNode;
-  search?: React.ReactNode;
-  test?: React.ReactNode;
 }) {
   return (
     <html lang="en">
@@ -71,13 +66,7 @@ export default async function RootLayout({
   );
 }
 
-export const SearchWrapper = ({
-  children,
-  search,
-}: {
-  children: React.ReactNode;
-  search?: React.ReactNode;
-}) => {
+export const SearchWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="app-content app-column">
       <div className="app-header app-navbar app-shadow">

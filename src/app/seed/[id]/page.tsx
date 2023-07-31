@@ -10,6 +10,7 @@ import { getReferences, getParents } from "@/util/dagUtils";
 import { SetActive } from "@/components/SetActive";
 import { filterNodes } from "@/util/filterNodes";
 import { generateSourceSQL } from "@/util/generateSourceSQL";
+import { MarkdownBlock } from "@/components/MarkdownBlock";
 
 export default async function SeedPage({
   params: { id },
@@ -88,7 +89,9 @@ export default async function SeedPage({
               <div className="panel">
                 <div className="panel-body">
                   {model.description ? (
-                    <div className="model-markdown">{model.description}</div>
+                    <div className="model-markdown">
+                      <MarkdownBlock markdown={model.description} />
+                    </div>
                   ) : (
                     <div>
                       This {model.resource_type} is not currently documented

@@ -10,6 +10,7 @@ import { getReferences, getParents } from "@/util/dagUtils";
 import Link from "next/link";
 import { SetActive } from "@/components/SetActive";
 import { filterNodes } from "@/util/filterNodes";
+import { MarkdownBlock } from "@/components/MarkdownBlock";
 
 export default async function MetricPage({
   params: { id },
@@ -79,7 +80,9 @@ export default async function MetricPage({
               <div className="panel">
                 <div className="panel-body">
                   {metric.description ? (
-                    <div className="model-markdown">{metric.description}</div>
+                    <div className="model-markdown">
+                      <MarkdownBlock markdown={metric.description} />
+                    </div>
                   ) : (
                     <div>
                       This {metric.resource_type} is not currently documented

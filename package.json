@@ -31,6 +31,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-lazy-with-preload": "^2.2.1",
+    "react-markdown": "^8.0.7",
     "react-syntax-highlighter": "^15.5.0",
     "server-only": "^0.0.1",
     "swr": "^2.2.0",
