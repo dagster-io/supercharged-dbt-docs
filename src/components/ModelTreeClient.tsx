@@ -28,7 +28,7 @@ export function ModelTreeClient() {
   >("project");
 
   const { data } = useSWR(
-    `${process.env.NEXT_PUBLIC_BASE_PATH}/treedata`,
+    `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/treedata`,
     fetcher
   );
   const tree = data || emptyObject;
@@ -123,7 +123,7 @@ export function ModelTreeClient() {
                 <TreeSection
                   title="Metrics"
                   elements={tree.metrics}
-                  resourceType="model"
+                  resourceType="metric"
                   setActive={setActive}
                 />
                 <TreeSection
@@ -139,7 +139,7 @@ export function ModelTreeClient() {
               <MenuTreeSection
                 title="Tables and Views"
                 elements={tree.database}
-                resourceType="model"
+                resourceType="database"
                 setActive={setActive}
               />
             </li>
@@ -269,7 +269,7 @@ const ModelTreeLine = ({
           href={
             resourceType === "source"
               ? `/source_list/${item.name}`
-              : item.type !== "database"
+              : resourceType !== "database"
               ? `/overview/${item.name}`
               : "#"
           }

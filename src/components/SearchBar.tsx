@@ -53,7 +53,7 @@ export function SearchBar() {
 
   const { data, isLoading } = useSWR(
     isFocused || searchValue.trim().length > 0
-      ? `${process.env.NEXT_PUBLIC_BASE_PATH}/searchdata`
+      ? `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/searchdata`
       : null,
     fetcher
   );
