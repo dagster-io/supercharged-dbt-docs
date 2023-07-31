@@ -34,5 +34,5 @@ export async function generateStaticParams() {
   ];
   return allFolders
     .filter((id, idx, arr) => arr.indexOf(id) === idx)
-    .map((folder) => ({ id: folder }));
+    .map((folder) => ({ id: folder.toLowerCase() }));
 }
