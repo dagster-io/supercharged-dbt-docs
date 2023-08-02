@@ -6,12 +6,9 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  experimental: {
-    appDir: true,
-  },
-
   output: "export",
   trailingSlash: true,
+  skipTrailingSlashRedirect: true,
   distDir: "dist/supercharged",
   basePath: process.env.NEXT_PUBLIC_BASE_PATH,
 };

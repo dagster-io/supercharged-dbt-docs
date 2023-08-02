@@ -35,7 +35,7 @@ export function SourceRow({ source }: { source: any }) {
           {expanded ? null : <span>{source.description}</span>}
         </td>
         <td>
-          <Link href={`/source/${source.unique_id}`}>View docs</Link>
+          <Link href={`/source/${source.unique_id}/`}>View docs</Link>
         </td>
         <td className="text-center">
           {hasMoreInfo ? (
