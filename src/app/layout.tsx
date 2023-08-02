@@ -30,6 +30,7 @@ export default async function RootLayout({
     <html lang="en">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="preload" href="/treedata" type="application/json" />
       </head>
       <body className={inter.className}>
         <main className="mx-8">
