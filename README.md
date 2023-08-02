@@ -9,4 +9,4 @@ Want to try this on your own project?
 
 
 Supercharged version: http://dbt-docs-supercharged-demo.s3-website-us-west-1.amazonaws.com/supercharged/
-Original DBT Version: https://dbt-docs-supercharged-demo.s3-website-us-west-1.amazonaws.com/original-dbt-docs-sources/
+Original DBT Version: https://dbt-docs-supercharged-demo.s3-website-us-west-1.amazonaws.com/original-dbt-docs/
