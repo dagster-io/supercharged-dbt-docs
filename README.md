@@ -4,7 +4,7 @@ This project was built primarily by Marco Salazar with contributions by Pete Hun
 
 Want to try this on your own project?
 * Replace `catalog.json` and `manifest.json` with the equivalent files from your dbt project
-* Run `yarn && yarn build`
+* Run `yarn install && yarn build`
 * Your docs will be generated in the `dist/supercharged` folder.
 
 
